@@ -11,7 +11,7 @@ const screen = {
   height: 720
 };
 
-const driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().headless().windowSize(screen)).build();
+const driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();
 
 
 
@@ -28,7 +28,7 @@ $('.td-module-thumb a').each((i,elem)=>{
   url=elem.attribs.href;
   pagetofetch[url]={'domain':'beebom','type':'tech'};
 });
-  await driver.quit();
+  //await driver.quit();
 console.log(pagetofetch);
 //console.log($('.td-module-thumb a'));000
 }
@@ -45,7 +45,7 @@ $('.extra-related-block .bottom figcaption a').each((i,elem)=>{
   url=elem.attribs.href;
   pagetofetch[url]={'domain':'ani','type':'national'};
 });
-  await driver.quit();
+  //await driver.quit();
 }
 
 async function fetchANI_Businesss() {
@@ -58,7 +58,7 @@ $('.extra-related-block .bottom figcaption a').each((i,elem)=>{
   url=elem.attribs.href;
   pagetofetch[url]={'domain':'ani','type':'business'};
 });
-  await driver.quit();
+ // await driver.quit();
 }
 
 async function fetchANI_Lifestyle() {
@@ -84,7 +84,7 @@ $('.extra-related-block .bottom figcaption a').each((i,elem)=>{
   url=elem.attribs.href;
   pagetofetch[url]={'domain':'ani','type':'entertainment'};
 });
-  await driver.quit();
+ // await driver.quit();
 }
 
 //================================== The Hindu========================================
@@ -125,12 +125,95 @@ $('.latest-news li a').each((i,elem)=>{
     pagetofetch[url]={'domain':'thehindu','type':'sport','subtype':route[4].toLowerCase()};
   }
 });
-  await driver.quit();
+//  await driver.quit();
   //console.log(pagetofetch);
 }
 
+//========================================= Jagran ===========================================
 
-fetchTheHindu();
+async function fetchJagran(url) {
+  await driver.get(url);
+  html = await driver.getPageSource();
+   $ = cheerio.load(html);
+ 
+$('.topicList li a').each((i,elem)=>{
+ // pagetofetch.push(elem.attribs.href);
+  url=elem.attribs.href;
+  url='https://english.jagran.com'+url;
+  route=url.split("/");
+  if(route[3]==="cricket"){
+    pagetofetch[url]={'domain':'jagran','type':'sport','subtype':'cricket'};
+  }
+  else if(route[3]==="trending"){
+    pagetofetch[url]={'domain':'jagran','type':'national'};
+  }
+  else if(route[3]==="india"){
+    pagetofetch[url]={'domain':'jagran','type':'national'};
+  }
+  else if(route[3]==="education"){
+    pagetofetch[url]={'domain':'jagran','type':'education'};
+  }
+  else if(route[3]==="lifestyle"){
+    pagetofetch[url]={'domain':'jagran','type':'lifestyle'};
+  }
+  else if(route[3]==="technology"){
+    pagetofetch[url]={'domain':'jagran','type':'sci-tech'};
+  }
+  
+  else if(route[3]==="elections"){
+    pagetofetch[url]={'domain':'jagran','type':'national'};
+  }
+  else if(route[3]==="business"){
+    pagetofetch[url]={'domain':'jagran','type':'business'};
+  }
+  else if(route[3]==="entertainment"){
+    pagetofetch[url]={'domain':'jagran','type':'entertainment'};
+  }
+  else pagetofetch[url]={'domain':'jagran','type':'other'};
+});
+  //await driver.quit();
+  console.log(pagetofetch);
+}
+ function fetchjagran(){
+
+  fetchJagran('https://english.jagran.com/latest-news');
+
+  fetchJagran('https://english.jagran.com/latest-news-page2');
+
+  fetchJagran('https://english.jagran.com/latest-news-page3');
+  fetchJagran('https://english.jagran.com/latest-news-page4');
+}
+
+//=====================================Aaj Tak=========================================================
+async function fetchAajTak() {
+  await driver.get('https://www.aajtak.in/trending');
+  await driver.findElement(By.id("load_more")).click();
+  html = await driver.getPageSource();
+   $ = cheerio.load(html);
+ 
+$('.manoranjan-widget li a').each((i,elem)=>{
+ // pagetofetch.push(elem.attribs.href);
+  url=elem.attribs.href;
+  pagetofetch[url]={'domain':'ani','type':'entertainment'};
+});
+ // await driver.quit();
+ console.log(pagetofetch);
+}
+
+
+
+
+//=====Uncomment to fetch ===========
+//fetchAajTak()
+//fetchjagran();
+// fetchBeebom();
+// fetchTheHindu();
+// fetchANI_Entertainment();
+// fetchANI_Lifestyle();
+// fetchANI_Businesss();
+// fetchANI_National();
+
+
 
 
 function pagefetcher(){
