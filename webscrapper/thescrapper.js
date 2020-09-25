@@ -185,7 +185,7 @@ $('.topicList li a').each((i,elem)=>{
 }
 
 //=====================================Aaj Tak=========================================================
-async function fetchAajTak() {
+async function fetchAajTak_trending() {
   await driver.get('https://www.aajtak.in/trending');
   await driver.findElement(By.id("load_more")).click();
   html = await driver.getPageSource();
@@ -194,12 +194,56 @@ async function fetchAajTak() {
 $('.manoranjan-widget li a').each((i,elem)=>{
  // pagetofetch.push(elem.attribs.href);
   url=elem.attribs.href;
-  pagetofetch[url]={'domain':'ani','type':'entertainment'};
+  pagetofetch[url]={'domain':'aajtak','type':'trending'};
 });
  // await driver.quit();
  console.log(pagetofetch);
 }
+async function fetchAajTak() {
+  await driver.get('https://www.aajtak.in/india/news');
+  
+  html = await driver.getPageSource();
+   $ = cheerio.load(html);
+ 
+$('.widget-listing-content-section a').each((i,elem)=>{
+ // pagetofetch.push(elem.attribs.href);
+  url=elem.attribs.href;
+  pagetofetch[url]={'domain':'aajtak','type':'national'};
+});
+ // await driver.quit();
 
+await driver.get('https://www.aajtak.in/india/politics');
+  
+  html = await driver.getPageSource();
+   $ = cheerio.load(html);
+ 
+$('.widget-listing-content-section a').each((i,elem)=>{
+ // pagetofetch.push(elem.attribs.href);
+  url=elem.attribs.href;
+  pagetofetch[url]={'domain':'aajtak','type':'politics'};
+});
+await driver.get('https://www.aajtak.in/india/uttar-pradesh');
+  
+  html = await driver.getPageSource();
+   $ = cheerio.load(html);
+ 
+$('.widget-listing-content-section a').each((i,elem)=>{
+ // pagetofetch.push(elem.attribs.href);
+  url=elem.attribs.href;
+  pagetofetch[url]={'domain':'aajtak','type':'state','subtype':'uttar-pradesh'};
+});
+await driver.get('https://www.aajtak.in/india/delhi');
+  
+  html = await driver.getPageSource();
+   $ = cheerio.load(html);
+ 
+$('.widget-listing-content-section a').each((i,elem)=>{
+ // pagetofetch.push(elem.attribs.href);
+  url=elem.attribs.href;
+  pagetofetch[url]={'domain':'aajtak','type':'state','subtype':'delhi'};
+});
+ console.log(pagetofetch);
+}
 
 
 
