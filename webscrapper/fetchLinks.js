@@ -28,7 +28,7 @@ $('.td-module-thumb a').each((i,elem)=>{
   url=elem.attribs.href;
   pagetofetch[url]={'domain':'beebom','type':'tech'};
 });
-  //await driver.quit();
+  await driver.quit();
 console.log(pagetofetch);
 //console.log($('.td-module-thumb a'));000
 }
@@ -125,7 +125,7 @@ $('.latest-news li a').each((i,elem)=>{
     pagetofetch[url]={'domain':'thehindu','type':'sport','subtype':route[4].toLowerCase()};
   }
 });
-//  await driver.quit();
+  await driver.quit();
   //console.log(pagetofetch);
 }
 
@@ -182,6 +182,7 @@ $('.topicList li a').each((i,elem)=>{
 
   fetchJagran('https://english.jagran.com/latest-news-page3');
   fetchJagran('https://english.jagran.com/latest-news-page4');
+   await driver.quit();
 }
 
 //=====================================Aaj Tak=========================================================
@@ -199,6 +200,8 @@ $('.manoranjan-widget li a').each((i,elem)=>{
  // await driver.quit();
  console.log(pagetofetch);
 }
+
+
 async function fetchAajTak() {
   await driver.get('https://www.aajtak.in/india/news');
   
@@ -242,6 +245,8 @@ $('.widget-listing-content-section a').each((i,elem)=>{
   url=elem.attribs.href;
   pagetofetch[url]={'domain':'aajtak','type':'state','subtype':'delhi'};
 });
+
+ await driver.quit();
  console.log(pagetofetch);
 }
 
