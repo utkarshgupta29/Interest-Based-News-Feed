@@ -250,87 +250,31 @@ async function fetchANINews(category,subcategory){
             4) others
         10) environment
 */
-// fetchANINews("entertainment","music");  //first argument refers to category and second for subcategory
+fetchANINews("entertainment","music");  //first argument refers to category and second for subcategory
 
-
+/*
 // The Hindu
 
-async function fetchTheHindu_links(category,subcategory) {
+async function fetch_the_links(category,subcategory) {
     var links=[]
-    await driver.get('https://www.thehindu.com/'+category+"/"+subcategory);
+    await driver.get('https://aninews.in/category/'+category+"/"+subcategory);
     //await driver.findElement(By.id("load_more")).click();
     html = await driver.getPageSource();
     $ = cheerio.load(html);
 
-    $('.story-thumb66-text').each((i,elem)=>{
+    $('.story1-3x100-heading s1-3x100BlueBg-heading').each((i,elem)=>{
         url = elem.attribs.href;
         links.push(url);
     });
-    
-    return links;
-}
-
-async function fetchNewsTheHindu(links){ 
-    var saved_articles = [];
-    //await driver.findElement(By.id("load_more")).click();
-    console.log("lets grab :"+links.length+" articles");
-    for(var  i=0;i<links.length;i++){
-        console.log("fetching  article "+i);
-        await driver.get(links[i]);
-        html=await driver.getPageSource();
-        saved_articles.push(helperTheHindu(html));
-    }
-  
-    return saved_articles;
-}
-
-function helperTheHindu(html){
-    $ = require('cheerio').load(html);
-    var news_title = $('h1.title').text();
-    var last_modified = $('div.teaser-text.update-time span').first().text().trim();
-    var news_body =  $(".paywall" ).text();
-    
-    var constructedArticle = {
-        title : news_title,
-        body : news_body,
-        date : last_modified
-    };
-    return constructedArticle;
-};
-
-async function fetchTheHinduNews(category,subcategory){
-    if(!subcategory)
-        subcategory ="";
-    category = category.toLowerCase();
-    subcategory = subcategory.toLowerCase();
-    
-    fetchTheHindu_links(category,subcategory).then((links)=>{
-        fetchNewsTheHindu(links).then((articles)=>{
-            printArticles(articles);
-        })
-    });
-}
-
-// fetchTheHinduNews("sport","cricket");  //first argument refers to category and second for subcategory
-
-// English Jagran
-
-async function fetchEnglishJagran_links(category,subcategory) {
-    var links=[]
-    await driver.get('https://english.jagran.com/'+category);
-    //await driver.findElement(By.id("load_more")).click();
-    html = await driver.getPageSource();
-    $ = cheerio.load(html);
-
-    $('.topicList li a').each((i,elem)=>{
-        url = "https://english.jagran.com"+elem.attribs.href;
+    $('.story-card-33-heading a').each((i,elem)=>{
+        url= elem.attribs.href;
         links.push(url);
     });
     
     return links;
 }
 
-async function fetchNewsEnglishJagran(links){ 
+async function fetchNewsANIEntertainment(links){ 
     var saved_articles = [];
     //await driver.findElement(By.id("load_more")).click();
     console.log("lets grab :"+links.length+" articles");
@@ -338,17 +282,17 @@ async function fetchNewsEnglishJagran(links){
         console.log("fetching  article "+i);
         await driver.get(links[i]);
         html=await driver.getPageSource();
-        saved_articles.push(helperEnglishJagran(html));
+        saved_articles.push(helperANIEntertainment(html));
     }
   
     return saved_articles;
 }
 
-function helperEnglishJagran(html){
+function helperANIEntertainment(html){
     $ = require('cheerio').load(html);
-    var news_title = $('#topHeading h1').text();
-    var last_modified = $('.dateInfo span').text().trim();
-    var news_body =  $("#article-des" ).clone().children().remove('.relativeNews').end().text();
+    var news_title = $('#news-detail-block  .content  h1').text();
+    var last_modified = $('#news-detail-block  .time-red').text();
+    var news_body =  $("#news-detail-block div[itemprop='articleBody'] p" ).text();
     
     var constructedArticle = {
         title : news_title,
@@ -358,22 +302,21 @@ function helperEnglishJagran(html){
     return constructedArticle;
 };
 
-async function fetchEnglishJagranNews(category,subcategory){
+async function fetchANINews(category,subcategory){
     if(!subcategory)
         subcategory ="";
-    else   
-        subcategory = "/"+subcategory;
     category = category.toLowerCase();
     subcategory = subcategory.toLowerCase();
     
-    fetchEnglishJagran_links(category,subcategory).then((links)=>{
-        fetchNewsEnglishJagran(links).then((articles)=>{
+    fetchANIEntertainment_trending_links(category,subcategory).then((links)=>{
+        fetchNewsANIEntertainment(links).then((articles)=>{
             printArticles(articles);
         })
     });
 }
 
-fetchEnglishJagranNews("technology");  //first argument refers to category and second for subcategory
+fetchANINews("entertainment","music");  //first argument refers to category and second for subcategory
+*/
 
 // Utilities 
 async function printArticles(articles){
