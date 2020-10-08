@@ -30,6 +30,8 @@ async function search(keyword,target){
     return await searchBeebom(keyword);
   if (target==='ani')
     return await searchAni(keyword);
+  if (target==='jagran')
+    return await searchJagran(keyword);
 
 }
 
@@ -114,10 +116,36 @@ await driver.quit();
   return posts;
  }
 
+//====================== english jagran =====================
+async function searchJagran(keyword){
+  var posts ={};
+   var val = keyword.trim();                       
+   var key = encodeURIComponent(val);
+   if (key.length != 0) {
+      URL = "https://english.jagran.com/search/" + key;
+      }
+  await driver.get(URL);
 
+    html = await driver.getPageSource();
+     $ = cheerio.load(html);
+     $(".topicList li a").each((i,elem)=>{
+ 
+     
+       url="https://english.jagran.com"+elem.attribs.href;
+       image=elem.children[1].children[1].attribs['data-src'];
+       title=elem.children[3].children[1].children[0].data;
+       time=elem.children[3].children[5].children[2].children[0].data;
+       
+       posts[url]={'title':title,'image':image,'date':time};
+      
+  });
+await driver.quit();
+  return posts;
+ }
 
-=========== driver  for testing ==========
-search('rape','AajTak').then((data)=>{
-console.log(data);
-});
+//=========== driver  for testing ==========
+// search('rape','AajTak').then((data)=>{
+// console.log(data);
+// });
+
 
