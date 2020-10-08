@@ -143,61 +143,11 @@ function helperBeeBom(html){
     })
 })*/
 
-// Time of India Latest News Section
-
-async function fetchTOI_trending_links() {
-    var links=[]
-    await driver.get('https://timesofindia.indiatimes.com/news');
-    //await driver.findElement(By.id("load_more")).click();
-    html = await driver.getPageSource();
-    $ = cheerio.load(html);
-    $('.main-content .w_tle > a').each((i,elem)=>{
-        url="https://timesofindia.indiatimes.com/"+elem.attribs.href;
-        links.push(url);
-    });
-    return links;
-}
-
-async function fetchNewsTOI(links){ 
-    var saved_articles = [];
-    //await driver.findElement(By.id("load_more")).click();
-    console.log("lets grab :"+links.length+" articles");
-    for(var  i=0;i<links.length;i++){
-        console.log("fetching  article "+i);
-        await driver.get(links[i]);
-        html=await driver.getPageSource();
-        saved_articles.push(helperTOI(html));
-    }
-  
-    return saved_articles;
-       
-}
-
-function helperTOI(html){
-    $ = require('cheerio').load(html);
-    var news_title = $('._23498').text();
-    var last_modified = $('._3Mkg-.byline').text();
-    var news_body =  $('.ga-headlines').clone().children().remove('.mgbox').end().text();
-    
-    var constructedArticle = {
-        title : news_title,
-        body : news_body,
-        date : last_modified
-    };
-    return constructedArticle;
-};
-
-/*fetchTOI_trending_links().then((links)=>{
-    fetchNewsTOI(links).then((articles)=>{
-        printArticles(articles);
-    })
-});*/
-
 // ANI - ENtertainment - Bollywood
 
-async function fetchANIEntertainment_trending_links() {
+async function fetchANIEntertainment_trending_links(category,subcategory) {
     var links=[]
-    await driver.get('https://aninews.in/category/entertainment/bollywood/');
+    await driver.get('https://aninews.in/category/'+category+"/"+subcategory);
     //await driver.findElement(By.id("load_more")).click();
     html = await driver.getPageSource();
     $ = cheerio.load(html);
@@ -226,7 +176,6 @@ async function fetchNewsANIEntertainment(links){
     }
   
     return saved_articles;
-       
 }
 
 function helperANIEntertainment(html){
@@ -243,12 +192,131 @@ function helperANIEntertainment(html){
     return constructedArticle;
 };
 
-fetchANIEntertainment_trending_links().then((links)=>{
-    fetchNewsANIEntertainment(links).then((articles)=>{
-        printArticles(articles);
-    })
-});
+async function fetchANINews(category,subcategory){
+    if(!subcategory)
+        subcategory ="";
+    category = category.toLowerCase();
+    subcategory = subcategory.toLowerCase();
+    
+    fetchANIEntertainment_trending_links(category,subcategory).then((links)=>{
+        fetchNewsANIEntertainment(links).then((articles)=>{
+            printArticles(articles);
+        })
+    });
+}
+/*
+    Cateogries Available : 
+        1) national 
+            1) general-News 
+            2) politics
+            3) features
+        2) world
+            1) asia
+            2) us
+            3) europe
+            4) pacific
+            5) others
+            6) middle-east
+        3) business
+            1) corporate
+        4) sports
+            1) cricket
+            2) football
+            3) tennis
+            4) hockey
+            5) others
+        5) lifestyle
+            1) relationship
+            2) sexuality
+            3) beauty
+            4) parenting
+            5) fashion
+            6) food
+            7) travel
+            8) quirky
+            9) fitness
+            10) culture
+        6) entertainment
+            1) bollywood
+            2) hollywood
+            3) music
+            4) out-Of-box
+        7) health
+        8) science
+        9) tech
+            1) mobile
+            2) internet
+            3) computers
+            4) others
+        10) environment
+*/
+fetchANINews("entertainment","music");  //first argument refers to category and second for subcategory
 
+/*
+// The Hindu
+
+async function fetch_the_links(category,subcategory) {
+    var links=[]
+    await driver.get('https://aninews.in/category/'+category+"/"+subcategory);
+    //await driver.findElement(By.id("load_more")).click();
+    html = await driver.getPageSource();
+    $ = cheerio.load(html);
+
+    $('.story1-3x100-heading s1-3x100BlueBg-heading').each((i,elem)=>{
+        url = elem.attribs.href;
+        links.push(url);
+    });
+    $('.story-card-33-heading a').each((i,elem)=>{
+        url= elem.attribs.href;
+        links.push(url);
+    });
+    
+    return links;
+}
+
+async function fetchNewsANIEntertainment(links){ 
+    var saved_articles = [];
+    //await driver.findElement(By.id("load_more")).click();
+    console.log("lets grab :"+links.length+" articles");
+    for(var  i=0;i<links.length;i++){
+        console.log("fetching  article "+i);
+        await driver.get(links[i]);
+        html=await driver.getPageSource();
+        saved_articles.push(helperANIEntertainment(html));
+    }
+  
+    return saved_articles;
+}
+
+function helperANIEntertainment(html){
+    $ = require('cheerio').load(html);
+    var news_title = $('#news-detail-block  .content  h1').text();
+    var last_modified = $('#news-detail-block  .time-red').text();
+    var news_body =  $("#news-detail-block div[itemprop='articleBody'] p" ).text();
+    
+    var constructedArticle = {
+        title : news_title,
+        body : news_body,
+        date : last_modified
+    };
+    return constructedArticle;
+};
+
+async function fetchANINews(category,subcategory){
+    if(!subcategory)
+        subcategory ="";
+    category = category.toLowerCase();
+    subcategory = subcategory.toLowerCase();
+    
+    fetchANIEntertainment_trending_links(category,subcategory).then((links)=>{
+        fetchNewsANIEntertainment(links).then((articles)=>{
+            printArticles(articles);
+        })
+    });
+}
+
+fetchANINews("entertainment","music");  //first argument refers to category and second for subcategory
+*/
 
 // Utilities 
 async function printArticles(articles){
