@@ -371,6 +371,7 @@ async function fetchEnglishJagranNews(category,subcategory){
             printArticles(articles);
         })
     });
+    await driver.quit();
 }
 
 fetchEnglishJagranNews("technology");  //first argument refers to category and second for subcategory
