@@ -6,6 +6,7 @@
            _id:
            url:
            title:
+           body:
            thumbnail:
            date:
            websiteName:
