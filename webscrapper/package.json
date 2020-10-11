@@ -6,6 +6,9 @@
   "dependencies": {
     "chalk": "^4.1.0",
     "cheerio": "^1.0.0-rc.3",
+    "fast-xml-parser": "^3.17.4",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.6",
     "selenium-webdriver": "^4.0.0-alpha.7"
   },
   "devDependencies": {},
