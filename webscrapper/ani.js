@@ -165,14 +165,21 @@ function fetchArticleHelper(html,link){
 };
 
 async function getByCategory(category,subcategory){
-    fetchCategoryLinks(category,subcategory).then((links)=>{
-        fetchArticles(links).then((articles)=>{
-            return (articles);
-        })
+    var articlesR=[];
+   await  fetchCategoryLinks(category,subcategory).then(async (links)=>{
+       await fetchArticles(links).then((articles)=>{
+            articlesR.push(articles);
+            
+        });
     });
+  
+   return await articlesR;
 }
 
 async function main(){
     var fetched_articles = await getByCategory('entertainment','music');
+   // console.log("main k alast;");
     console.log(fetched_articles);
 }
+
+main()
