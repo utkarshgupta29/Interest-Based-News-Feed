@@ -116,15 +116,15 @@ async function fetchCategoryLinks(category,subcategory) {
         };
         links.push(link);
     });
-    // $('.extra-related-block  figcaption  .read-more').each((i,elem)=>{
-    //     url="https://aninews.in/"+elem.attribs.href;
-    //     var link = {
-    //         url : url,
-    //         category : category,
-    //         subcategory : subcategory
-    //     };
-    //     links.push(link);
-    // });
+    $('.extra-related-block  figcaption  .read-more').each((i,elem)=>{
+        url="https://aninews.in/"+elem.attribs.href;
+        var link = {
+            url : url,
+            category : category,
+            subcategory : subcategory
+        };
+        links.push(link);
+    });
     
     return links;
 }
@@ -165,21 +165,18 @@ function fetchArticleHelper(html,link){
 };
 
 async function getByCategory(category,subcategory){
-    var articlesR=[];
-   await  fetchCategoryLinks(category,subcategory).then(async (links)=>{
-       await fetchArticles(links).then((articles)=>{
-            articlesR.push(articles);
-            
-        });
+    var fetched_articles = [];
+    await fetchCategoryLinks(category,subcategory).then(async(links)=>{
+        await fetchArticles(links).then((articles)=>{
+            fetched_articles = articles;
+        })
     });
-  
-   return await articlesR;
+    return fetched_articles;
 }
 
 async function main(){
     var fetched_articles = await getByCategory('entertainment','music');
-   // console.log("main k alast;");
     console.log(fetched_articles);
 }
 
-main()
+main();
