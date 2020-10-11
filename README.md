@@ -27,7 +27,7 @@
    keyword_idexing {
                     _id:
                     keyword:
-                    articles: [_id from Articles]
+                    articles: [{websiteName : [articlesIds]}]
                    }
                    
  # Web Scraper
