@@ -21,7 +21,7 @@ promise.USE_PROMISE_MANAGER =false;
 
 class Beebom {
 
-	CATEGORIES=['tech'];
+	//CATEGORIES=['tech'];
 	constructor(){
 		console.log("constructor called yess");
 		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();

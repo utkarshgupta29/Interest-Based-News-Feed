@@ -21,7 +21,7 @@ promise.USE_PROMISE_MANAGER =false;
 
 class EnglishJagran {
 
-	CATEGORIES=['national','politics','sports'];
+	//CATEGORIES=['national','politics','sports'];
 	constructor(){
 		console.log("constructor called yess");
 		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();

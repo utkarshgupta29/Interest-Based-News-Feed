@@ -11,4 +11,9 @@ var articleSchema=new mongoose.Schema({
 	
 });
 
-module.exports=mongoose.model("article",articleSchema);
+module.exports={ 
+		ani:mongoose.model("ani",articleSchema),
+		beebom:mongoose.model("beebom",articleSchema),
+		theHindu:mongoose.model("theHindu",articleSchema),
+		jagran:mongoose.model("jagran",articleSchema),
+	};
