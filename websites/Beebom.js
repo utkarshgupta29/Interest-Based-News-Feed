@@ -33,17 +33,21 @@ class Beebom {
 		var html;
 		var url;
 		var $;
+		var links=[];
+	    await driver.get('https://beebom.com/category/news/');
+		html = await driver.getPageSource();
+		$ = cheerio.load(html);
 
-	    await this.driver.get('https://');
-	  
-	    html = await this.driver.getPageSource();
-	    $ = cheerio.load(html);
-	 
-		
-
-	 	await this.driver.quit();
-	 	return this.pagetofetch;
+		$('.td-module-thumb a').each((i,elem)=>{
+		 
+		  url=elem.attribs.href;
+		  var link={'url':url,'category':'tech'};
+		  links.push(link);
+		});
+		 await this.driver.quit();
+		return links;
 	}
+	 
 
 
 	async getTrending(){
@@ -51,6 +55,28 @@ class Beebom {
 	}
 
 	async fetchArticle(link){
+		var html;
+		var $;
+		await this.driver.get(links[i].url);
+        html=await driver.getPageSource();
+         $ = require('cheerio').load(html);
+	    var news_title = $('.entry-title').text();
+	    var last_modified = $('.the-modified-date > .updated').text();
+	    var news_body =  "";
+	    $('.td-post-content > p').each(function(){
+	        news_body += $(this).text();
+	    });
+	    var constructedArticle = {
+	        title : news_title,
+	        body : news_body,
+	        date : last_modified,
+	        url : link.url,
+	        //thumbnail :,
+	        websiteName : 'beebom',
+	        category : link.category,
+	        subcategory : link.subcategory,
+	    };
+	    return constructedArticle;
 
 	}
 
@@ -58,8 +84,26 @@ class Beebom {
 
 	}
 
-	async search(keyword){
+	async search(keyword){  //TODO    no completed yet : server side issue taking too long to show results'
+		var posts ={};
+	    var val = keyword.trim();                       
+	    var key = encodeURIComponent(val);
+	    var URL;
+	    var html,$;
+	    if (key.length != 0) {
+	      URL = "https://beebom.com/?s=" + key;
+	      }
+	    await this.driver.get(URL);
 
+	    html = await driver.getPageSource();
+	    $ = cheerio.load(html);
+	    $("#datafetch .search-list").each((i,elem)=>{
+	       data=elem
+	       console.log(data);
+	
+	    });
+	
+	    return posts;
 	}
 
 }
