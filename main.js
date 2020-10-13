@@ -39,10 +39,11 @@ var beebom_getlatest =new CronJob('0 */10 * * * *',async()=>{
   addtofetchqueue(latest);
 },null,false,'Asia/Kolkata');
 
+
 function addtofetchqueue(data){
   console.log("i will connect to db");
   data.forEach(link=>{
-      console.log("saving this: ");
+      //console.log("saving this: ");
       console.log(link);
           tofetch.create({
               url:link.url,
@@ -65,7 +66,18 @@ async function directcall(){
   addtofetchqueue(latest);
 }
 
-directcall();
+
+
+
+
+async function anni(){
+  var inst=await new aniWEb();
+  await inst.getLatest()
+       .then((links)=>{inst.fetchArticles(links)});
+}
+
+anni();
+//directcall();
 
 
 

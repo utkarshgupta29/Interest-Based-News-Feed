@@ -1,9 +1,11 @@
 var mongoose=require("mongoose");
 
 var articleSchema=new mongoose.Schema({
+	title:String,
 	url:String,
 	thumbnail:String,
 	date:String,
+	body:String,
 	websitename:String,
 	category:String,
 	subcategory:String,

@@ -1,8 +1,9 @@
 //import modules 
-
+const mongoose=require('mongoose');
 const cheerio = require('cheerio');
 const chalk = require('chalk');
 // Selenium web driver configuration
+const articles =require('../schema/article.js').ani;
 
 const firefox =require('selenium-webdriver/firefox');
 const webdriver = require('selenium-webdriver'),
@@ -17,7 +18,9 @@ promise.USE_PROMISE_MANAGER =false;
  		 height: 720
 		};
 
-		
+mongoose.connect("mongodb+srv://testUser:caJVL81AbLu7pe4D@cluster0.stbzy.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true});
+
+	
 
 class Ani {
 
@@ -26,7 +29,7 @@ class Ani {
 		//console.log("constructor called yess");
 		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();
 		this.pagetofetch={};
-	
+		
 	}
 
 	async  getLatest() {
@@ -35,19 +38,19 @@ class Ani {
 		var $;
 		var links=[];
 	    await this.driver.get('https://aninews.in/category/national/');
-		html = await driver.getPageSource();
+		html = await this.driver.getPageSource();
 		$ = cheerio.load(html);
-		 
-		$('.extra-related-block .bottom figcaption a').each((i,elem)=>{
+		 var link;
+		$('.extra-related-block .bottom figcaption .read-more').each((i,elem)=>{
 		 // pagetofetch.push(elem.attribs.href);
-		  url=elem.attribs.href;
-		  var link={'url':url,'websitename':'ani','category':'national'};
+		  url="https://aninews.in"+elem.attribs.href;
+		  link={'url':url,'websitename':'ani','category':'national'};
 		  links.push(link);
 		});
 	 
 		
 
-	 	await this.driver.quit();
+	 	
 	 	return links;
 	}
 
@@ -57,11 +60,12 @@ class Ani {
 	}
 
 	async fetchArticle(link){
+		console.log("i got order to fetch this link :" +link.url);
 		var html;
 		var url;
 		var $;
-		await this.driver.get(link);
-		html=await driver.getPageSource();
+		await this.driver.get(link.url);
+		html=await this.driver.getPageSource();
 		 $ = require('cheerio').load(html);
 	    var news_title = $('#news-detail-block  .content  h1').text();
 	    var last_modified = $('#news-detail-block  .time-red').text();
@@ -154,6 +158,36 @@ class Ani {
 	    });
 	    
 	    return links;
+	}
+
+	async fetchArticles(links){
+		console.log("in fetcharticles");
+		var fetched_articles=[];
+		//console.log(links);
+		for(var i=0;i<links.length;i++){
+			await articles.findOne({url:links[i].url}).exec().then(async (err,article)=>{
+				if(err){
+					console.log("already exists");
+				}else{
+					    console.log("not cached lets fetch this url");
+						var fa=await this.fetchArticle(links[i]);
+						await articles.create({
+							url:fa.url,
+							title:fa.title,
+							body:fa.body,
+							date:fa.date,
+							websitename:fa.websiteName,
+							category:fa.category,
+							subcategory:fa.subcategory,
+						}).then((data)=>{
+							
+							console.log("successfully inserted one article ");
+						});
+					
+				}
+			});	
+		}
+		
 	}
 
 	quit(){
