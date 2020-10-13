@@ -68,8 +68,7 @@
 
 const cheerio = require('cheerio');
 const chalk = require('chalk');
-
-
+const Article = require('./models/article');
 
 // Selenium web driver configuration
 
@@ -107,26 +106,44 @@ async function fetchCategoryLinks(category,subcategory) {
     html = await driver.getPageSource();
     $ = cheerio.load(html);
 
-    $('.news-article  article  .content  .read-more').each((i,elem)=>{
-        url="https://aninews.in/"+elem.attribs.href;
-        var link = {
-            url : url,
-            category : category,
-            subcategory : subcategory
-        };
-        links.push(link);
-    });
-    $('.extra-related-block  figcaption  .read-more').each((i,elem)=>{
-        url="https://aninews.in/"+elem.attribs.href;
-        var link = {
-            url : url,
-            category : category,
-            subcategory : subcategory
-        };
-        links.push(link);
-    });
     
-    return links;
+    var p = new Promise((resolve,reject)=>{
+        console.log("Promise started");
+        $('.news-article  article  .content  .read-more').each(async (i,elem)=>{
+            console.log("Entered loop");
+            url="https://aninews.in/"+elem.attribs.href;
+            Article.findOne({url:url},function(err,article){
+                if(err){
+                    console.log(err)
+                }else{
+                    console.log("is Presnet :"+article);
+                    if(article==null){
+                        var link = {
+                            url : url,
+                            category : category,
+                            subcategory : subcategory
+                        };
+                        links.push(link);
+                    }
+                }  
+            });
+    
+        });
+        console.log("Promise ended : "+links);
+        resolve(links);
+    });
+    // links.push(link);
+    // $('.extra-related-block  figcaption  .read-more').each((i,elem)=>{
+    //     url="https://aninews.in/"+elem.attribs.href;
+    //     var link = {
+    //         url : url,
+    //         category : category,
+    //         subcategory : subcategory
+    //     };
+    //     links.push(link);
+    // });
+    
+    return p;
 }
 
 //this function will fetch articles that belong to the provided links
@@ -161,6 +178,13 @@ function fetchArticleHelper(html,link){
         category : link.category,
         subcategory : link.subcategory,
     };
+    /*Article.create(constructedArticle,function(err,savedArticle){
+        if(err){
+            console.log(err);
+        }else{
+            console.log(savedArticle);
+        }
+    })*/
     return constructedArticle;
 };
 
@@ -173,10 +197,11 @@ async function getByCategory(category,subcategory){
     });
     return fetched_articles;
 }
-
 async function main(){
     var fetched_articles = await getByCategory('entertainment','music');
     console.log(fetched_articles);
 }
 
 main();
+
+//module.exports = {getByCategory};
