@@ -47,29 +47,29 @@ class TheHindu{
 			  var link;
 			 if(route[3]==="news"){
 			        if(route[4]==="national"){
-			          link={'url':url,'category':'national'};
+			          link={'url':url,'websitename':'thehindu','category':'national'};
 			        }
 			        else if(route[4]==="international"){
 			          link={'url':url,'category':'international'};
 			        }
 			        else if(route[4]==="cities"){
-			          link={'url':url,'category':'cities','subtcategory':route[5].toLowerCase()};  //city name
+			          link={'url':url,'websitename':'thehindu','category':'cities','subtcategory':route[5].toLowerCase()};  //city name
 			        }
 			  }
 			  else if(route[3]==="business"){
-			    link={'url':url,'category':'business'};
+			    link={'url':url,'websitename':'thehindu','category':'business'};
 			  }
 			  else if(route[3]==="entertainment"){
-			    link={'url':url,'category':'entertainment'};
+			    link={'url':url,'websitename':'thehindu','category':'entertainment'};
 			  }
 			  else if(route[3]==="sci-tech"){
-			    link={'url':url,'category':'sci-tech'};
+			    link={'url':url,'websitename':'thehindu','category':'sci-tech'};
 			  }
 			  else if(route[3]==="books"){
-			    link={'url':url,'category':'books'};
+			    link={'url':url,'websitename':'thehindu','category':'books'};
 			  }
 			  else if(route[3]==="sport"){
-			    link={'url':url,'category':'sports','subcategory':route[4].toLowerCase()};
+			    link={'url':url,'websitename':'thehindu','category':'sports','subcategory':route[4].toLowerCase()};
 			  }
 			  links.push(link);
 		});

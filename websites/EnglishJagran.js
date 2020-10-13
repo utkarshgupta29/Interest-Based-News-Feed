@@ -148,31 +148,31 @@ class EnglishJagran {
 		   link={'url':url,'category':'sport','subcategory':'cricket'};
 		  }
 		  else if(route[3]==="trending"){
-		    link={'url':url,'category':'national'};
+		    link={'url':url,'websitename':'jagran','category':'national'};
 		  }
 		  else if(route[3]==="india"){
-		     link={'url':url,'category':'national'};
+		     link={'url':url,'websitename':'jagran','category':'national'};
 		  }
 		  else if(route[3]==="education"){
-		     link={'url':url,'category':'education'};
+		     link={'url':url,'websitename':'jagran','category':'education'};
 		  }
 		  else if(route[3]==="lifestyle"){
-		     link={'url':url,'category':'lifestyle'};
+		     link={'url':url,'websitename':'jagran','category':'lifestyle'};
 		  }
 		  else if(route[3]==="technology"){
-		     link={'url':url,'category':'sci-tech'};
+		     link={'url':url,'websitename':'jagran','category':'sci-tech'};
 		  }
 		  
 		  else if(route[3]==="elections"){
-		     link={'url':url,'category':'national'};
+		     link={'url':url,'websitename':'jagran','category':'national'};
 		  }
 		  else if(route[3]==="business"){
-		     link={'url':url,'category':'business'};
+		     link={'url':url,'websitename':'jagran','category':'business'};
 		  }
 		  else if(route[3]==="entertainment"){
-		     link={'url':url,'category':'entertainment'};
+		     link={'url':url,'websitename':'jagran','category':'entertainment'};
 		  }
-		  else  link={'url':url,'category':'other'};
+		  else  link={'url':url,'websitename':'jagran','category':'other'};
 
 		  links.push(link);
 		});

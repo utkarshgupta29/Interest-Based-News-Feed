@@ -34,14 +34,14 @@ class Beebom {
 		var url;
 		var $;
 		var links=[];
-	    await driver.get('https://beebom.com/category/news/');
-		html = await driver.getPageSource();
+	    await this.driver.get('https://beebom.com/category/news/');
+		html = await this.driver.getPageSource();
 		$ = cheerio.load(html);
 
 		$('.td-module-thumb a').each((i,elem)=>{
 		 
 		  url=elem.attribs.href;
-		  var link={'url':url,'category':'tech'};
+		  var link={'url':url,'websitename':'beebom','category':'tech'};
 		  links.push(link);
 		});
 		 await this.driver.quit();

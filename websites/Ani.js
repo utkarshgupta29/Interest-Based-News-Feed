@@ -41,7 +41,7 @@ class Ani {
 		$('.extra-related-block .bottom figcaption a').each((i,elem)=>{
 		 // pagetofetch.push(elem.attribs.href);
 		  url=elem.attribs.href;
-		  var link={'url':url,'category':'national'};
+		  var link={'url':url,'websitename':'ani','category':'national'};
 		  links.push(link);
 		});
 	 
