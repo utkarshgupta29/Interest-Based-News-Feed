@@ -28,24 +28,55 @@ class Ani {
 
 	//CATEGORIES=['national','politics','sports'];
 	constructor(){
-		//console.log("constructor called yess");
 		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();
 		this.pagetofetch={};
 		
 	}
 
 	async  getLatest() { 
-		var links = await this.fetchCategoryLinks('national');	
-		return links;
+		var links=[]
+	    var html;
+		var url;
+		var $;
+		
+		
+		await this.driver.get('https://aninews.in');
+	    
+	    html = await this.driver.getPageSource();
+
+	    $ = cheerio.load(html);
+
+	    $('.top-news-block .avtaar-wrapper .avtaar-list a').each((i,elem)=>{
+			url="https://aninews.in"+elem.attribs.href;
+			var temp = elem.attribs.href.split("/");
+			var category,subcategory;
+			
+			if(temp.length>=4){
+				category = temp[2];	//for getting category
+
+				if(temp.length>=5)	//check if subcategory exists
+					subcategory = temp[3];	//get subcategory
+			}
+
+			var link = {
+	            url : url,
+	            category : category,
+	            subcategory : subcategory
+	        };
+	        links.push(link);
+	    });
+	    
+	    return links;
+
 	}
 
 
 	async getTrending(){
-
+		var links = await this.fetchCategoryLinks('national');	
+		return links;
 	}
 
 	async fetchArticle(link){
-		console.log("i got order to fetch this link :" +link.url);
 		var html;
 		var url;
 		var $;
@@ -79,6 +110,80 @@ class Ani {
     	return fetched_articles;
 	}
 
+	async fetchCategoryLinks(category,subcategory) {
+	    var links=[]
+	    var html;
+		var url;
+		var $;
+		
+		
+	    if(subcategory)
+	        await this.driver.get('https://aninews.in/category/'+category+"/"+subcategory);
+	    else
+	        await this.driver.get('https://aninews.in/category/'+category);
+	    
+	    html = await this.driver.getPageSource();
+
+	    $ = cheerio.load(html);
+
+	    $('.news-article  article  .content  .read-more').each((i,elem)=>{
+			url="https://aninews.in"+elem.attribs.href;
+			var temp = elem.attribs.href.split("/");
+			
+			if(temp.length>=5)	//check if subcategory exists
+				subcategory = temp[3];	//get subcategory
+			
+			var link = {
+	            url : url,
+	            category : category,
+	            subcategory : subcategory
+	        };
+	        links.push(link);
+	    });
+	    $('.extra-related-block  figcaption  .read-more').each((i,elem)=>{
+	        url="https://aninews.in/"+elem.attribs.href;
+	        var temp = elem.attribs.href.split("/");
+	        if(temp.length>=5)	//check if subcategory exists
+				subcategory = temp[3];	//get subcategory
+			var link = {
+	            url : url,
+	            category : category,
+	            subcategory : subcategory
+	        };
+	        links.push(link);
+	    });
+	    
+	    return links;
+	}
+
+	async fetchArticles(links){
+		console.log("Fetching "+links.length+" articles.");
+		var fetched_articles=[];
+		//console.log(links);
+		for(var i=0;i<links.length;i++){
+			await Article.findOne({url:links[i].url}).exec().then(async (err,article)=>{
+				if(err){
+					console.log(err);
+				}else{
+					if(article==null){
+						// article is not present in our db
+						var fa=await this.fetchArticle(links[i]);
+						await Article.create(fa).then(async(err,s_article)=>{
+							if(err){
+								console.log(err);
+							}else{
+								console.log("article saved : "+s_article);
+							}
+						});
+
+					}						
+				}
+			});	
+		}
+		
+	}
+
+	// For searching directly in main website's search bar
 	async search(keyword){
 		var posts =[];
 		var html;
@@ -105,64 +210,6 @@ class Ani {
         });
 		await this.driver.quit();
   		return posts;
-	}
-
-
-
-    async fetchCategoryLinks(category,subcategory) {
-	    var links=[]
-	    var html;
-		var url;
-		var $;
-		
-		
-	    if(subcategory)
-	        await this.driver.get('https://aninews.in/category/'+category+"/"+subcategory);
-	    else
-	        await this.driver.get('https://aninews.in/category/'+category);
-	    
-	    html = await this.driver.getPageSource();
-
-	    $ = cheerio.load(html);
-
-	    $('.news-article  article  .content  .read-more').each((i,elem)=>{
-	        url="https://aninews.in/"+elem.attribs.href;
-	        var link = {
-	            url : url,
-	            category : category,
-	            subcategory : subcategory
-	        };
-	        links.push(link);
-	    });
-	    $('.extra-related-block  figcaption  .read-more').each((i,elem)=>{
-	        url="https://aninews.in/"+elem.attribs.href;
-	        var link = {
-	            url : url,
-	            category : category,
-	            subcategory : subcategory
-	        };
-	        links.push(link);
-	    });
-	    
-	    return links;
-	}
-
-	async fetchArticles(links){
-		console.log("Fetching "+links.length+" articles.");
-		var fetched_articles=[];
-		//console.log(links);
-		for(var i=0;i<links.length;i++){
-			await Article.findOne({url:links[i].url}).exec().then(async (err,article)=>{
-				if(err){
-					console.log("already exists");
-				}else{
-					    console.log("not cached lets fetch this url");
-						var fa=await this.fetchArticle(links[i]);
-						console.log(fa);	
-				}
-			});	
-		}
-		
 	}
 
 	quit(){
