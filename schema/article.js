@@ -1,21 +1,38 @@
-var mongoose=require("mongoose");
+var mongoose = require("mongoose");
 
-var articleSchema=new mongoose.Schema({
-	title:String,
-	url:String,
-	thumbnail:String,
-	date:String,
-	body:String,
-	websitename:String,
-	category:String,
-	subcategory:String,
+const user = "admin";	//replace with your username
+const pass = "admin";	//replace with your password
+
+
+// For local MongoDB
+// const db_url = 'mongodb://localhost/InterestBasedNewsFeed';	
+
+//For Cloud MongoDB
+const db_url = 'mongodb+srv://'+user+':'+pass+'@cluster0.stbzy.mongodb.net/InterestBasedNewsFeed?retryWrites=true&w=majority';
+
+mongoose.connect(db_url);
+
+var articleSchema = new mongoose.Schema({
+    title : String,
+    thumbnail : String,
+    body : String,
+    date : {type : Date},
+    websiteName : String,
+    category : String,
+    subcategory : String,
+    url : String,
 	keywords:String,
-	
 });
 
+
+var Article = mongoose.model('Article',articleSchema);
+module.exports = Article;
+
+/*
 module.exports={ 
 		ani:mongoose.model("ani",articleSchema),
 		beebom:mongoose.model("beebom",articleSchema),
 		theHindu:mongoose.model("theHindu",articleSchema),
 		jagran:mongoose.model("jagran",articleSchema),
 	};
+*/
