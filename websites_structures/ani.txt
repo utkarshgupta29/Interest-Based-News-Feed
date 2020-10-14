@@ -1,0 +1,61 @@
+    Website Name : ANI 
+
+    Website Structure For News Categories And Subcategories
+
+    --------------------------------------------------------------------------------
+    CATEGORY                    SUBCATEGORY                     URL
+    --------------------------------------------------------------------------------
+    1) national                                               /national
+                            a) general-News                   /national/general-news  
+                            b) politics                       /national/politics
+                            c) features                       /national/features
+
+    2) world                                                  /world
+                            a) asia                           /world/asia
+                            b) us                             /world/us
+                            c) europe                         /world/europe
+                            d) pacific                        /world/pacific
+                            e) others                         /world/others
+                            f) middle-east                    /world/middle-east
+
+    3) business                                               /business
+                            a) corporate                      /business/corporate
+    
+    4) sports                                                 /sports
+                            a) cricket                        /sports/cricket
+                            b) football                       /sports/football
+                            c) tennis                         /sports/tennis
+                            d) hockey                         /sports/hockey
+                            e) others                         /sports/others
+                            
+    5) lifestyle                                              /lifestyle
+                            a) relationship                   /lifestyle/relationships
+                            b) sexuality                      /lifestyle/sexuality
+                            c) beauty                         /lifestyle/beauty
+                            d) parenting                      /lifestyle/parenting
+                            e) fashion                        /lifestyle/fashion
+                            f) food                           /lifestyle/food
+                            g) travel                         /lifestyle/travel
+                            h) quirky                         /lifestyle/quirky
+                            i) fitness                        /lifestyle/fitness
+                            j) culture                        /lifestyle/culture     
+
+    6) entertainment                                          /entertainment
+                            a) bollywood                      /entertainment/bollywood
+                            b) hollywood                      /entertainment/hollywood
+                            c) music                          /entertainment/music
+                            d) out-Of-box                     /entertainment/out-of-box
+    
+    7) health                                                 /health
+
+    8) science                                                /science
+    
+    9) technology                                             /tech
+        1) mobile                                             /tech/mobile
+        2) internet                                           /tech/internet
+        3) computers                                          /tech/computers
+        4) others                                             /tech/others
+    
+    10) environment                                           /environment
+
+    -----------------------------------------------------------------------------
