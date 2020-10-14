@@ -1,10 +1,15 @@
+/**
+ * 	Website Name : ANI
+ *  
+ */
+
 //import modules 
-const mongoose=require('mongoose');
+
 const cheerio = require('cheerio');
 const chalk = require('chalk');
-// Selenium web driver configuration
-const articles =require('../schema/article.js').ani;
+const Article = require('../schema/article');
 
+// Selenium web driver configuration
 const firefox =require('selenium-webdriver/firefox');
 const webdriver = require('selenium-webdriver'),
     By = webdriver.By,
@@ -17,9 +22,6 @@ promise.USE_PROMISE_MANAGER =false;
  		 width: 1280,
  		 height: 720
 		};
-
-mongoose.connect("mongodb+srv://testUser:caJVL81AbLu7pe4D@cluster0.stbzy.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true});
-
 	
 
 class Ani {
@@ -32,26 +34,9 @@ class Ani {
 		
 	}
 
-	async  getLatest() {
-		var html;
-		var url;
-		var $;
-		var links=[];
-	    await this.driver.get('https://aninews.in/category/national/');
-		html = await this.driver.getPageSource();
-		$ = cheerio.load(html);
-		 var link;
-		$('.extra-related-block .bottom figcaption .read-more').each((i,elem)=>{
-		 // pagetofetch.push(elem.attribs.href);
-		  url="https://aninews.in"+elem.attribs.href;
-		  link={'url':url,'websitename':'ani','category':'national'};
-		  links.push(link);
-		});
-	 
-		
-
-	 	
-	 	return links;
+	async  getLatest() { 
+		var links = await this.fetchCategoryLinks('national');	
+		return links;
 	}
 
 
@@ -86,8 +71,8 @@ class Ani {
 
 	async getByCategory(category,subcategory){
 		var fetched_articles = [];
-    	await fetchCategoryLinks(category,subcategory).then(async(links)=>{
-        await fetchArticles(links).then((articles)=>{
+    	await this.fetchCategoryLinks(category,subcategory).then(async(links)=>{
+        await this.fetchArticles(links).then((articles)=>{
             fetched_articles = articles;
         	})
     	});
@@ -129,6 +114,8 @@ class Ani {
 	    var html;
 		var url;
 		var $;
+		
+		
 	    if(subcategory)
 	        await this.driver.get('https://aninews.in/category/'+category+"/"+subcategory);
 	    else
@@ -161,29 +148,17 @@ class Ani {
 	}
 
 	async fetchArticles(links){
-		console.log("in fetcharticles");
+		console.log("Fetching "+links.length+" articles.");
 		var fetched_articles=[];
 		//console.log(links);
 		for(var i=0;i<links.length;i++){
-			await articles.findOne({url:links[i].url}).exec().then(async (err,article)=>{
+			await Article.findOne({url:links[i].url}).exec().then(async (err,article)=>{
 				if(err){
 					console.log("already exists");
 				}else{
 					    console.log("not cached lets fetch this url");
 						var fa=await this.fetchArticle(links[i]);
-						await articles.create({
-							url:fa.url,
-							title:fa.title,
-							body:fa.body,
-							date:fa.date,
-							websitename:fa.websiteName,
-							category:fa.category,
-							subcategory:fa.subcategory,
-						}).then((data)=>{
-							
-							console.log("successfully inserted one article ");
-						});
-					
+						console.log(fa);	
 				}
 			});	
 		}
@@ -193,9 +168,19 @@ class Ani {
 	quit(){
 		this.driver.quit();
 	}
-
-
-
 }
 
 module.exports= Ani;
+
+/*
+	// For testing purpose :
+
+	async function main(){
+		const ani = new Ani();
+		var fetched_articles = await ani.getByCategory('entertainment','music');
+		console.log(fetched_articles);
+		// console.log(await ani.getLatest());
+	}
+
+	main();
+*/
