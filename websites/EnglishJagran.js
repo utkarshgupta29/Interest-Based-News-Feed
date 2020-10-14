@@ -2,6 +2,7 @@
 
 const cheerio = require('cheerio');
 const chalk = require('chalk');
+const Article =require('../schema/article');
 // Selenium web driver configuration
 
 const firefox =require('selenium-webdriver/firefox');
@@ -23,7 +24,7 @@ class EnglishJagran {
 
 	//CATEGORIES=['national','politics','sports'];
 	constructor(){
-		console.log("constructor called yess");
+		
 		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();
 		this.pagetofetch={};
 	
@@ -31,19 +32,19 @@ class EnglishJagran {
 
 	async  getLatest() {
 		var links=[];
-		var link1=await fetchJagran('https://english.jagran.com/latest-news');
+		var link1=await this.fetchJagran('https://english.jagran.com/latest-news');
 		links=links.concat(link1);
 
-		link1=await fetchJagran('https://english.jagran.com/latest-news-page2');
+		link1=await this.fetchJagran('https://english.jagran.com/latest-news-page2');
 		links=links.concat(link1);
 
-		link1=await fetchJagran('https://english.jagran.com/latest-news-page3');
+		link1=await this.fetchJagran('https://english.jagran.com/latest-news-page3');
 		links=links.concat(link1);
 
-		link1=await fetchJagran('https://english.jagran.com/latest-news-page4');
+		link1=await this.fetchJagran('https://english.jagran.com/latest-news-page4');
 		links=links.concat(link1);
 
-		this.driver.quit();
+		
 		return links;
 	}
 
@@ -55,7 +56,7 @@ class EnglishJagran {
 	async fetchArticle(link){
 		var html,$;
 	    var url;
-	    await this.driver.get(link);
+	    await this.driver.get(link.url);
 	    html = await this.driver.getPageSource();
 	     $ = require('cheerio').load(html);
 	    var news_title = $('#topHeading h1').text();
@@ -77,7 +78,13 @@ class EnglishJagran {
 	}
 
 	async getByCategory(category,subcategory){
-
+		var fetched_articles = [];
+    	await this.fetchCategoryLinks(category,subcategory).then(async(links)=>{
+        await this.fetchArticles(links).then((articles)=>{
+            fetched_articles = articles;
+        	})
+    	});
+    	return fetched_articles;
 	}
 
 	async search(keyword){
@@ -128,7 +135,34 @@ class EnglishJagran {
 	    
 	    return links;
 	}
-	
+	async fetchArticles(links){
+		console.log("Fetching "+links.length+" articles from jagran.");
+		var fetched_articles=[];
+		//console.log(links);
+		for(var i=0;i<links.length;i++){
+			await Article.findOne({url:links[i].url}).exec().then(async (article,err)=>{
+				if(article){
+					// article already exists in db
+					console.log('this article from jagran already exists');
+					fetched_articles.push(article);
+				}else{
+					// article is not present in our db
+					var fa=await this.fetchArticle(links[i]);
+					fetched_articles.push(fa);
+					await Article.create(fa).then((s_article)=>{
+						if(s_article){
+							console.log("Article saved successfully : "+s_article._id);
+						}else{
+							console.log("article not saved"+s_article);
+						}
+					});
+
+				}
+			});	
+		}
+		return fetched_articles;
+	}
+	//helper function fo getLatest()
     async fetchJagran(url) {
     	var html;
     	var $;
@@ -142,37 +176,37 @@ class EnglishJagran {
 		 // pagetofetch.push(elem.attribs.href);
 		  url=elem.attribs.href;
 		  url='https://english.jagran.com'+url;
-		  route=url.split("/");
+		  var route=url.split("/");
 		  var link;
 		  if(route[3]==="cricket"){
 		   link={'url':url,'category':'sport','subcategory':'cricket'};
 		  }
 		  else if(route[3]==="trending"){
-		    link={'url':url,'websitename':'jagran','category':'national'};
+		    link={'url':url,'websiteName':'jagran','category':'national'};
 		  }
 		  else if(route[3]==="india"){
-		     link={'url':url,'websitename':'jagran','category':'national'};
+		     link={'url':url,'websiteName':'jagran','category':'national'};
 		  }
 		  else if(route[3]==="education"){
-		     link={'url':url,'websitename':'jagran','category':'education'};
+		     link={'url':url,'websiteName':'jagran','category':'education'};
 		  }
 		  else if(route[3]==="lifestyle"){
-		     link={'url':url,'websitename':'jagran','category':'lifestyle'};
+		     link={'url':url,'websiteName':'jagran','category':'lifestyle'};
 		  }
 		  else if(route[3]==="technology"){
-		     link={'url':url,'websitename':'jagran','category':'sci-tech'};
+		     link={'url':url,'websiteName':'jagran','category':'sci-tech'};
 		  }
 		  
 		  else if(route[3]==="elections"){
-		     link={'url':url,'websitename':'jagran','category':'national'};
+		     link={'url':url,'websiteName':'jagran','category':'national'};
 		  }
 		  else if(route[3]==="business"){
-		     link={'url':url,'websitename':'jagran','category':'business'};
+		     link={'url':url,'websiteName':'jagran','category':'business'};
 		  }
 		  else if(route[3]==="entertainment"){
-		     link={'url':url,'websitename':'jagran','category':'entertainment'};
+		     link={'url':url,'websiteName':'jagran','category':'entertainment'};
 		  }
-		  else  link={'url':url,'websitename':'jagran','category':'other'};
+		  else  link={'url':url,'websiteName':'jagran','category':'other'};
 
 		  links.push(link);
 		});

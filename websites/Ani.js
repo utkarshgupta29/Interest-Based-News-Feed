@@ -164,6 +164,7 @@ class Ani {
 			await Article.findOne({url:links[i].url}).exec().then(async (article,err)=>{
 				if(article){
 					// article already exists in db
+					console.log("already exists");
 					fetched_articles.push(article);
 				}else{
 					// article is not present in our db
@@ -171,7 +172,7 @@ class Ani {
 					fetched_articles.push(fa);
 					await Article.create(fa).then((s_article)=>{
 						if(s_article){
-							console.log("Article saved successfully : "+s_article);
+							console.log("Article saved successfully : "+s_article._id);
 						}else{
 							console.log("article not saved"+s_article);
 						}

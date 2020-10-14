@@ -2,6 +2,7 @@
 
 const cheerio = require('cheerio');
 const chalk = require('chalk');
+const Article = require('../schema/article');
 // Selenium web driver configuration
 
 const firefox =require('selenium-webdriver/firefox');
@@ -23,7 +24,7 @@ class Beebom {
 
 	//CATEGORIES=['tech'];
 	constructor(){
-		console.log("constructor called yess");
+		
 		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();
 		this.pagetofetch={};
 	
@@ -44,7 +45,7 @@ class Beebom {
 		  var link={'url':url,'websitename':'beebom','category':'tech'};
 		  links.push(link);
 		});
-		 await this.driver.quit();
+		 
 		return links;
 	}
 	 
@@ -57,8 +58,8 @@ class Beebom {
 	async fetchArticle(link){
 		var html;
 		var $;
-		await this.driver.get(links[i].url);
-        html=await driver.getPageSource();
+		await this.driver.get(link.url);
+        html=await this.driver.getPageSource();
          $ = require('cheerio').load(html);
 	    var news_title = $('.entry-title').text();
 	    var last_modified = $('.the-modified-date > .updated').text();
@@ -81,7 +82,13 @@ class Beebom {
 	}
 
 	async getByCategory(category,subcategory){
-
+		var fetched_articles = [];
+    	await this.fetchCategoryLinks(category,subcategory).then(async(links)=>{
+	        await this.fetchArticles(links).then((articles)=>{
+	            fetched_articles = articles;
+	        	});
+        });
+    	return fetched_articles;
 	}
 
 	async search(keyword){  //TODO    no completed yet : server side issue taking too long to show results'
@@ -104,6 +111,35 @@ class Beebom {
 	    });
 	
 	    return posts;
+	}
+
+	async fetchArticles(links){
+		console.log("Fetching "+links.length+" articles. from beebom");
+		var fetched_articles=[];
+		//console.log(links);
+		for(var i=0;i<links.length;i++){
+			await Article.findOne({url:links[i].url}).exec().then(async (article,err)=>{
+				if(article){
+					// article already exists in db
+					console.log("this article from beebom already exists")
+					fetched_articles.push(article);
+				}else{
+					// article is not present in our db
+					var fa=await this.fetchArticle(links[i]);
+					fetched_articles.push(fa);
+					await Article.create(fa).then((s_article)=>{
+						if(s_article){
+							console.log("Article saved successfully : "+s_article._id);
+						}else{
+							console.log("article not saved"+s_article);
+						}
+					});
+
+				}
+			});	
+		}
+		console.log("beebom done fetching articles");
+		return fetched_articles;
 	}
 
 }

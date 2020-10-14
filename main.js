@@ -16,7 +16,7 @@ const jagranWeb = require("./websites/EnglishJagran.js");
 const thehinduWeb = require("./websites/TheHindu.js");
 
 
-mongoose.connect("mongodb+srv://testUser:caJVL81AbLu7pe4D@cluster0.stbzy.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true});
+//mongoose.connect("mongodb+srv://testUser:caJVL81AbLu7pe4D@cluster0.stbzy.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true});
 
 
 
@@ -76,7 +76,35 @@ async function anni(){
        .then((links)=>{inst.fetchArticles(links)});
 }
 
-anni();
+//anni();
+
+
+async function hindu(){
+  var inst=await new thehinduWeb();
+  await inst.getLatest()
+       .then((links)=>{ inst.fetchArticles(links);  });
+}
+
+hindu();
+
+
+
+async function bee(){
+  var inst1=await new beebomWeb();
+  await inst1.getLatest()
+       .then((links)=>{  inst1.fetchArticles(links);  });
+}
+
+//bee();
+async function jagrant(){
+  var inst=await new jagranWeb();
+  await inst.getLatest()
+       .then((links)=>{  inst.fetchArticles(links)
+            .then((articles)=>console.log("jagran done ")) ;
+        }).catch((err)=>console.err(err));
+}
+//jagrant();
+
 //directcall();
 
 

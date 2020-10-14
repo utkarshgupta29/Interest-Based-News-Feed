@@ -2,6 +2,7 @@
 
 const cheerio = require('cheerio');
 const chalk = require('chalk');
+const Article=require('../schema/article');
 // Selenium web driver configuration
 
 const firefox =require('selenium-webdriver/firefox');
@@ -23,7 +24,7 @@ class TheHindu{
 
 	//CATEGORIES=['national','politics','sports'];
 	constructor(){
-		console.log("constructor called yess");
+		
 		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();
 		this.pagetofetch={};
 	
@@ -43,7 +44,7 @@ class TheHindu{
 
 
 			 var url=elem.attribs.href;
-			  route=url.split("/");
+			  var route=url.split("/");
 			  var link;
 			 if(route[3]==="news"){
 			        if(route[4]==="national"){
@@ -71,9 +72,12 @@ class TheHindu{
 			  else if(route[3]==="sport"){
 			    link={'url':url,'websitename':'thehindu','category':'sports','subcategory':route[4].toLowerCase()};
 			  }
+			  else{
+			  	link={'url':url,'websitename':'thehindu','category':route[3].toLowerCase()};
+			  }
 			  links.push(link);
 		});
-		  await this.driver.quit();
+		  
 		  return links;
 	}
 
@@ -84,7 +88,7 @@ class TheHindu{
 
 	async fetchArticle(link){
 		var html,$;
-		await this.driver.get(links[i].url);
+		await this.driver.get(link.url);
         html=await this.driver.getPageSource();
         $ = require('cheerio').load(html);
 	    var news_title = $('h1.title').text();
@@ -133,6 +137,43 @@ class TheHindu{
 	    });
 	    
 	    return links;
+	}
+
+	async getByCategory(category,subcategory){
+		var fetched_articles = [];
+    	await this.fetchCategoryLinks(category,subcategory).then(async(links)=>{
+        await this.fetchArticles(links).then((articles)=>{
+            fetched_articles = articles;
+        	})
+    	});
+    	return fetched_articles;
+	}
+	async fetchArticles(links){
+		console.log("Fetching "+links.length+" articles from the TheHindu.");
+		var fetched_articles=[];
+		//console.log(links);
+		for(var i=0;i<links.length;i++){
+			await Article.findOne({url:links[i].url}).exec().then(async (article,err)=>{
+				if(article){
+					// article already exists in db
+					console.log("this article from TheHindu  alredy exists");
+					fetched_articles.push(article);
+				}else{
+					// article is not present in our db
+					var fa=await this.fetchArticle(links[i]);
+					fetched_articles.push(fa);
+					await Article.create(fa).then((s_article)=>{
+						if(s_article){
+							console.log("Article saved successfully : "+s_article._id);
+						}else{
+							console.log("article not saved"+s_article);
+						}
+					});
+
+				}
+			});	
+		}
+		return fetched_articles;
 	}
 
 
