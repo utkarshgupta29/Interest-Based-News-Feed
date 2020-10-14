@@ -161,26 +161,26 @@ class Ani {
 		var fetched_articles=[];
 		//console.log(links);
 		for(var i=0;i<links.length;i++){
-			await Article.findOne({url:links[i].url}).exec().then(async (err,article)=>{
-				if(err){
-					console.log(err);
+			await Article.findOne({url:links[i].url}).exec().then(async (article,err)=>{
+				if(article){
+					// article already exists in db
+					fetched_articles.push(article);
 				}else{
-					if(article==null){
-						// article is not present in our db
-						var fa=await this.fetchArticle(links[i]);
-						await Article.create(fa).then(async(err,s_article)=>{
-							if(err){
-								console.log(err);
-							}else{
-								console.log("article saved : "+s_article);
-							}
-						});
+					// article is not present in our db
+					var fa=await this.fetchArticle(links[i]);
+					fetched_articles.push(fa);
+					await Article.create(fa).then((s_article)=>{
+						if(s_article){
+							console.log("Article saved successfully : "+s_article);
+						}else{
+							console.log("article not saved"+s_article);
+						}
+					});
 
-					}						
 				}
 			});	
 		}
-		
+		return fetched_articles;
 	}
 
 	// For searching directly in main website's search bar
