@@ -61,12 +61,6 @@ function addtofetchqueue(data){
 
 //beebom_getlatest.start();
 
-async function directcall(){
-  var latest=await new beebomWeb().getLatest();
-  addtofetchqueue(latest);
-}
-
-
 
 
 
@@ -85,14 +79,14 @@ async function hindu(){
        .then((links)=>{ inst.fetchArticles(links);  });
 }
 
-hindu();
+
 
 
 
 async function bee(){
-  var inst1=await new beebomWeb();
-  await inst1.getLatest()
-       .then((links)=>{  inst1.fetchArticles(links);  });
+  var inst=await new beebomWeb();
+  await inst.getLatest()
+       .then((links)=>{  inst.fetchArticles(links);  });
 }
 
 //bee();
@@ -100,14 +94,14 @@ async function jagrant(){
   var inst=await new jagranWeb();
   await inst.getLatest()
        .then((links)=>{  inst.fetchArticles(links)
-            .then((articles)=>console.log("jagran done ")) ;
+            .then((articles)=>{console.log("jagran done "); inst.quit();}) ;
         }).catch((err)=>console.err(err));
 }
 //jagrant();
 
 //directcall();
 
-
+module.exports ={ anni, hindu,bee,jagrant};
 
 
 

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>getlatest</title>
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/Login-Form-Clean.css">
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+
+<body>
+    <div style="min-height: 98px;"></div>
+    <div style="margin-top: 26px;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 offset-lg-2" style="border-width: 0.4px;border-style: solid;border-right-style: solid;">
+                    <h1 style="text-align: center;">TheHindu</h1><form action="/scraper/thehindu" method="get" id="thehindu"> </form>
+                    <div class="form-group"><button class="btn btn-primary" type="submit" form="thehindu"  style="margin-left: 31%;">Scrap</button></div>
+                </div>
+                <div class="col-md-3 offset-lg-2" style="border-width: 0.4px;border-style: solid;border-right-style: solid;">
+                    <h1 style="text-align: center;">Jagran</h1><form action="/scraper/jagran" method="get" id="jagran"></form>
+                    <div class="form-group"><button class="btn btn-primary" type="submit" form="jagran" value="Submit" style="margin-left: 31%;">Scrap</button></div> 
+                </div>
+            </div>
+            <div class="row" style="margin-top: 16px;">
+                <div class="col-md-3 offset-lg-2" style="border-width: 0.4px;border-style: solid;border-right-style: solid;">
+                    <h1 style="text-align: center;">ANI</h1><form action="/scraper/ani" method="get" id="ani"></form>
+                    <div class="form-group"><button class="btn btn-primary" type="submit" style="margin-left: 31%;" form="ani" value="submit">Scrap</button></div>
+                </div>
+                <div class="col-md-3 offset-lg-2" style="border-width: 0.4px;border-style: solid;">
+                    <h1 style="text-align: center;">Beebom</h1> <form action="/scraper/beebom" method="get" id="beebom"> </form>
+                    <div class="form-group"><button class="btn btn-primary" type="submit" form='beebom' value="Submit" style="margin-left: 31%;">Scrap</button></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+</body>
+
+</html>
