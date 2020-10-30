@@ -42,8 +42,7 @@ app.use(function(req,res,next){
 });
 
 app.get('/',function(req,res){
-    res.send("this is our landing page");
-    res.end();
+    res.render("landingpage");
 });
 app.get('/home',isLoggedIn,function(req,res){
     // sports
@@ -231,7 +230,7 @@ app.get("/logout",function(req,res){
 	res.redirect("/login");
 });
 app.get("*",function(err,res){
-	res.send("You landed on wrong page.");
+	res.render("landingpage");
 });
 function isLoggedIn(req,res,next){
 	if(req.isAuthenticated()) return next();

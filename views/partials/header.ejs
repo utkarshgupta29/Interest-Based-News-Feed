@@ -56,3 +56,9 @@
         </div>
     </nav>
     <section></section>
+    <script>$("#searchbox").on('keyup', function (e) {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+        $("#searchform").submit();
+    }
+        });
+    </script>
