@@ -1,0 +1,23 @@
+<%- include('./partials/header.ejs') %>
+    <div class="article-clean">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
+                    <div class="intro">
+                        <h1 class="text-center"><%=article.title%></h1>
+                        <p class="text-center"><span class="by">From</span> <a href="#"><%=article.websiteName%></a> <span class="date"><%=article.date%> </span></p><img class="img-fluid" src="assets/img/desk.jpg"></div>
+                    <div class="text">
+                        <%= article.body%>
+
+                        <!-- <figure><img class="figure-img" src="assets/img/beach.jpg">
+                            <figcaption>Caption</figcaption>
+                        </figure> -->
+                    </div>
+                    <!-- <p><%= article.websiteName %></p> -->
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="min-height: 96px;padding-top: 21px;margin-top: 15px;"></div>
+    <%- include('./partials/footer.ejs') %>
