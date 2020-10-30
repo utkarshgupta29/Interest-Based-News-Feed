@@ -17,6 +17,8 @@ function func(e){
         method : "POST",
         contentType : "application/x-www-form-urlencoded",
         success : function(res){
+            console.log("ajax success");
+            console.log(res);
             var str = "<div class='container'>";
             for(var i=0;i<res.from.length;i++){
                 var title = res.from[i].title;

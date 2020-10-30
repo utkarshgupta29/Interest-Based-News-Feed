@@ -15,7 +15,7 @@ app.use(require("express-session")({
 	saveUninitialized:false
 }));
 
-app.use(bodyParser.urlencoded({extended:true}));
+app.use(bodyParser.urlencoded({extended:false}));
 app.set("view engine","ejs");
 app.use(passport.initialize());
 app.use(passport.session());
@@ -23,25 +23,18 @@ app.use(express.static(__dirname+'/public'));
 
 //mongoose.connect("mongodb://localhost/insurance", {useNewUrlParser: true , useUnifiedTopology: true});
 
-var userSchema =new mongoose.Schema({
-	username:String,
-	email:String,
-	phoneno:String,
-	password:String,
-	
-});
-userSchema.plugin(passportLocalMongoose);
 
 
-var user =mongoose.model("users",userSchema);
 
-passport.use(new LocalStrategy(user.authenticate()));
-passport.serializeUser(user.serializeUser());
-passport.deserializeUser(user.deserializeUser());
+var User =require("./schema/user.js");
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
-}, user.authenticate()));
+}, User.authenticate()));
 
 app.use(function(req,res,next){
 	res.locals.currentUser=req.user;
@@ -101,15 +94,15 @@ app.post('/category/:category',function(req,res){
 
 app.post("/signup",function(req,res){
 
-	user.register(new user({username:req.body.email}),req.body.password,function(err,usercurrent){
+	User.register(new User({username:req.body.email}),req.body.password,function(err,usercurrent){
 		if(err){
 			console.log(err);
-			return res.render('register');
+			return res.render('signup');
 		}
 		passport.authenticate("local")(req,res,function(){
-			user.findOneAndUpdate({username:req.body.email},{$set:{email:req.body.email,userid:req.body.phoneno,ac_address:req.body.ac_address,name:req.body.name,phoneno:req.body.phoneno}},function(err,data){
+			User.findOneAndUpdate({username:req.body.email},{$set:{email:req.body.email,userid:req.body.phoneno,ac_address:req.body.ac_address,name:req.body.name,phoneno:req.body.phoneno}},function(err,data){
 				if(err) console.log(err);
-				res.redirect("/home");
+				res.redirect("/preference");
 			});
 			
 		});
