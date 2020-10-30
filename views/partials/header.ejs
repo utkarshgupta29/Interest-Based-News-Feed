@@ -27,7 +27,12 @@
                     <li class="nav-item" role="presentation"></li>
                     <li class="nav-item" role="presentation"></li>
                 </ul>
-               <span class="navbar-text actions"> <a class="login" href="#">Log In</a><a class="btn btn-light action-button" role="button" href="#">Sign Up</a></span></div>
+               <span class="navbar-text actions"> <%if(!currentUser){ %> <a class="login" href="/login">Log In</a><a class="btn btn-light action-button" role="button" href="/signup">Sign Up</a>
+                                <%}else{ %> 
+                        <a class="login" href="/home"> <%=currentUser.username%></a>
+
+                    <a class="btn btn-light action-button" role="button" href="/logout">Logout</a>
+                    <%}%></span></div>
         </div>
     </nav>
     <nav class="navbar navbar-light navbar-expand-md bg-secondary navigation-clean" style="padding: 0px;">
