@@ -39,7 +39,7 @@ app.get("/search",async (req,res)=>{
 	res.render("search");
 	else{
 
-		var inst=await new jagranWeb();
+		var inst=await new aniWeb();
          await inst.search(q)
             .then((posts)=>{
             	console.log("mujhe milgya");
