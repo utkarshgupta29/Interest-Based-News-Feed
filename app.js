@@ -41,7 +41,57 @@ app.use(function(req,res,next){
 	next();
 });
 
+app.get('/',function(req,res){
+    res.send("this is our landing page");
+    res.end();
+});
+app.get('/home',isLoggedIn,function(req,res){
+    // sports
+    // politics
+    // national 
+    // world
+    // technology
+    var cats = ['sports','politics','national','world','technology'];
+    User.findById(req.user._id,function(err,currUser){
+        if(err){
+            console.log(err);
+            res.redirect('/category/sports');
+        }else{
+            var preferences = currUser.preferences;
+            console.log("entered");
+            async function p(){
+                return new Promise(async function(resolve,reject){
+                    var articles = {};
+                    console.log("Inside promise");
+                    for(var i=0;i<cats.length;i++){
+                       var websites =  preferences[cats[i]];
+                        if(!websites)
+                            continue;
+                        var arr = [];
+                        for(var k=0;k<websites.length;k++){
+                            await Article.find({$and :[{$or : [{category : cats[i]},{subcategory : cats[i]}]},{websiteName : websites[k]}]}).exec().then(function(farticles){
+                                for(var j=0;j<farticles.length;j++){
+                                    arr.push(farticles[j]);
+                                }
+                            });
+                        }
+                       articles[cats[i]] = arr;
+                    }
+                    resolve(articles);
 
+                });                
+            }
+            (async function (){
+                await p().then((articles)=>{
+                    res.render('home',{articles : articles});
+                });
+            })();
+            
+        }
+    })
+
+
+});
 
 app.get('/searchresult',function(req,res){
     Article.find({$text:{$search : req.query.keyword}},function(err,articles){
@@ -82,10 +132,55 @@ app.post('/category/:category',function(req,res){
             });
         }
     });
-    
 });
 
+app.get('/preferences',function(req,res){
+    res.render('preferences');
+});
+app.post('/preferences',function(req,res){
+    var technology = req.body.technology;
+    var sports = req.body.sports;
+    var politics = req.body.politics;
+    var national = req.body.national;
+    var world = req.body.world;
+    var user = req.user._id;
+    
+    var user_new_preferences = {
+        technology : technology,
+        sports : sports,
+        politics : politics,
+        national : national,
+        world : world,
+        scinece : [],
+        business : [],
+        entertainment :[]
 
+    };
+    User.findById(user._id,function(err,currUser){
+        if(err){
+            console.log(err);
+            res.redirect('/');
+        }else{
+            
+            // sports : [],
+            // politics :[],
+            // national : [],
+            // world : [],
+            // science : [],
+            // business :[],
+            // technology : [],
+            // entertainment : []
+            currUser.preferences = user_new_preferences;
+            currUser.save();
+            User.findById(currUser._id,function(err,user){
+                console.log(user);
+                res.redirect('/home');    
+            })
+        }
+    });
+    // res.redirect('/');
+    // User.findById()
+});
 
 //                NONE OF YOUR BUSINESS
 
@@ -102,7 +197,7 @@ app.post("/signup",function(req,res){
 		passport.authenticate("local")(req,res,function(){
 			User.findOneAndUpdate({username:req.body.email},{$set:{email:req.body.email,userid:req.body.phoneno,ac_address:req.body.ac_address,name:req.body.name,phoneno:req.body.phoneno}},function(err,data){
 				if(err) console.log(err);
-				res.redirect("/preference");
+				res.redirect("/preferences");
 			});
 			
 		});
@@ -122,7 +217,7 @@ app.get("/login",function(req,res){
 	res.render("login",{retry:false});
 });
 app.post("/login",passport.authenticate("local",{
-	successRedirect:"/",
+	successRedirect:"/home",
 	failureRedirect:"/login?incorrect=1"
 }),function(req,res){
 
@@ -131,8 +226,8 @@ app.get("/logout",function(req,res){
 	req.logout();
 	res.redirect("/login");
 });
-app.get("/*",function(err,res){
-	res.render("home");
+app.get("*",function(err,res){
+	res.send("You landed on wrong page.");
 });
 function isLoggedIn(req,res,next){
 	if(req.isAuthenticated()) return next();
@@ -140,8 +235,6 @@ function isLoggedIn(req,res,next){
 	//console.log("incorrect password");
 	res.redirect("/login");
 }
-app.listen(3000,process.env.IP,function(){
+app.listen(5000,process.env.IP,function(){
 console.log("server started");
 });
-
-

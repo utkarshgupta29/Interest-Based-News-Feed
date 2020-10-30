@@ -17,10 +17,19 @@ mongoose.connect(db_url,{useNewUrlParser: true , useUnifiedTopology: true});
 
 var userSchema =new mongoose.Schema({
 	username:String,
-	email:String,
-	phoneno:String,
-	password:String,
-	
+	email: String,
+	phoneno: String,
+	password: String,
+	preferences : {
+		sports : [],
+		politics :[],
+		national : [],
+		world : [],
+		science : [],
+		business :[],
+		technology : [],
+		entertainment : []
+	}
 });
 userSchema.plugin(passportLocalMongoose);
 

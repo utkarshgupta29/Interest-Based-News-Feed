@@ -1,0 +1,95 @@
+<%- include('./partials/header.ejs') %>
+
+    <div style="min-height: 96px;padding-top: 21px;margin-top: 15px;">
+        <h2 class="text-center">Select Your Preference</h2>
+    </div>
+    <form action="/preferences" method="POST" id="preferencesForm">
+    <div>
+        <div class="container" style="padding-bottom: 42px;">
+            <div class="row">
+                <div class="col-md-3" style="height: 157px;">
+                    <div class="card" style="min-height: 0;height: 157px;"><img class="card-img w-100 d-block" style="min-height: 41px;height: 157px;">
+                        <div class="card-img-overlay text-center">
+                            <h4 class="text-center" >Sports</h4>
+                            <div class="form-check"><input name="sports" value = "thehindu" class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Hindu</label></div>
+                            <div class="form-check"><input name="sports" value = "jagran" class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">jagran</label></div>
+                            <div class="form-check"><input name="sports" value = "ani" class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-2">ANI</label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="height: 157px;">
+                    <div class="card" style="min-height: 0;height: 157px;"><img class="card-img w-100 d-block" style="min-height: 41px;height: 157px;">
+                        <div class="card-img-overlay text-center">
+                            <h4 class="text-center" >Politics</h4>
+                            <div class="form-check"><input name="politics" value = "thehindu" class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Hindu</label></div>
+                            <div class="form-check"><input name="politics" value = "jagran" class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">jagran</label></div>
+                            <div class="form-check"><input name="politics" value = "ani" class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-2">ANI</label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="height: 157px;">
+                    <div class="card" style="min-height: 0;height: 157px;"><img class="card-img w-100 d-block" style="min-height: 41px;height: 157px;">
+                        <div class="card-img-overlay text-center">
+                            <h4 class="text-center">National</h4>
+                            <div class="form-check"><input name="national" value = "thehindu" class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Hindu</label></div>
+                            <div class="form-check"><input name="national" value = "jagran" class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">jagran</label></div>
+                            <div class="form-check"><input name="national" value = "ani" class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-2">ANI</label></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="height: 157px;">
+                    <div class="card" style="min-height: 0;height: 157px;"><img class="card-img w-100 d-block" style="min-height: 41px;height: 157px;">
+                        <div class="card-img-overlay text-center">
+                            <h4 class="text-center">World</h4>
+                            <div class="form-check"><input name="world" value = "thehindu" class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Hindu</label></div>
+                            <div class="form-check"><input name="world" value = "jagran" class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">jagran</label></div>
+                            <div class="form-check"><input name="world" value = "ani" class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-2">ANI</label></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="container" style="padding-bottom: 42px;">
+            <div class="row">
+                <div class="col-md-3" style="height: 157px;">
+                    <div class="card" style="min-height: 0;height: 157px;"><img class="card-img w-100 d-block" style="min-height: 41px;height: 157px;">
+                        <div class="card-img-overlay text-center">
+                            <h4 class="text-center">Tech</h4>
+                            <div class="form-check"><input name="technology" value = "thehindu" class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1">Hindu</label></div>
+                            <div class="form-check"><input name="technology" value = "jagran" class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2">jagran</label></div>
+                            <div class="form-check"><input name="technology" value = "ani" class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-2">ANI</label></div>
+                            <div class="form-check"><input name="technology" value = "beebom" class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-2">Beebom</label></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="col-md-3" style="height: 157px;">
+                    <div class="card" style="min-height: 0;height: 157px;"><img class="card-img w-100 d-block" style="min-height: 41px;height: 157px;">
+                        <div class="card-img-overlay text-center">
+                            <h4 class="text-center">LifeStyle</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="height: 157px;">
+                    <div class="card" style="min-height: 0;height: 157px;"><img class="card-img w-100 d-block" style="min-height: 41px;height: 157px;">
+                        <div class="card-img-overlay text-center">
+                            <h4 class="text-center">Bollywood</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3" style="height: 157px;">
+                    <div class="card" style="min-height: 0;height: 157px;"><img class="card-img w-100 d-block" style="min-height: 41px;height: 157px;">
+                        <div class="card-img-overlay text-center">
+                            <h4 class="text-center">Business</h4>
+                        </div>
+                    </div>
+                </div> -->
+            </div>
+            <div class="row">
+                <div class="col offset-lg-5"><button class="btn btn-primary" type="submit" style="text-align: center;width: 113px;">Save</button></div>
+            </div>
+        </div>
+    </div>
+</form>    
+<%- include('./partials/footer.ejs') %>

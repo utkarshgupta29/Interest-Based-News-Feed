@@ -30,7 +30,6 @@
                <span class="navbar-text actions"> <%if(!currentUser){ %> <a class="login" href="/login">Log In</a><a class="btn btn-light action-button" role="button" href="/signup">Sign Up</a>
                                 <%}else{ %> 
                         <a class="login" href="/home"> <%=currentUser.username%></a>
-
                     <a class="btn btn-light action-button" role="button" href="/logout">Logout</a>
                     <%}%></span></div>
         </div>
@@ -40,7 +39,7 @@
             <form class="form-inline" action="/searchresult" method="GET"><input class="form-control" name="keyword" type="text" style="width:18.2em"><button class="btn btn-primary" type="submit">Search</button></form>
             <div class="collapse navbar-collapse" id="navcol-1" style="text-align: center;">
                 <ul class="nav navbar-nav mx-auto">
-                    <li class="nav-item" role="presentation"><a class="nav-link" href="/" style="color: rgb(255,255,255);">Home</a></li>
+                    <li class="nav-item" role="presentation"><a class="nav-link" href="/home" style="color: rgb(255,255,255);">Home</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="/category/sports" style="color: rgb(255,255,255);">Sports</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="/category/politics" style="color: rgb(255,255,255);">Politics</a></li>
                     <li class="nav-item" role="presentation"><a class="nav-link" href="/category/national" style="color: rgb(255,255,255);">National</a></li>
