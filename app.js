@@ -239,6 +239,6 @@ function isLoggedIn(req,res,next){
 	//console.log("incorrect password");
 	res.redirect("/login");
 }
-app.listen(5000,process.env.IP,function(){
+app.listen(process.env.PORT||process.env.PORT,process.env.IP,function(){
 console.log("server started");
 });
