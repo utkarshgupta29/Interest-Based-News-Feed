@@ -3,6 +3,9 @@
 const cheerio = require('cheerio');
 const chalk = require('chalk');
 const Article =require('../schema/article');
+const request=require('request');
+
+var rp      = require('request-promise');  
 // Selenium web driver configuration
 
 const firefox =require('selenium-webdriver/firefox');
@@ -25,7 +28,7 @@ class EnglishJagran {
 	//CATEGORIES=['national','politics','sports'];
 	constructor(){
 		
-		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();
+		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().headless().windowSize(screen)).build();
 		this.pagetofetch={};
 	
 	}
@@ -87,11 +90,40 @@ class EnglishJagran {
     	return fetched_articles;
 	}
 
+	async searchF(keyword){
+		var posts =[];
+	   	var val = keyword.trim();                       
+	   	var key = encodeURIComponent(val);
+	   	var url,html,$,image,title,image,time,post={},data;
+
+	   	if (key.length != 0) {
+	      URL = "https://english.jagran.com/search/" + key;
+	      }
+	  	//await this.driver.get(URL);
+        await rp(URL).then((data)=>{
+        	console.log(data);
+         		 $ = cheerio.load(data);
+			     $(".topicList li a").each((i,elem)=>{
+			       url="https://english.jagran.com"+elem.attribs.href;
+			       image=elem.children[1].children[1].attribs['data-src'];
+			       title=elem.children[3].children[1].children[0].data;
+			       time=elem.children[3].children[5].children[2].children[0].data;
+			       data=elem.children[3].children[3].children[0].data;
+			       //console.log(data);
+			       post={'url':url,'title':title,'thumbnail':image,'date':time,'body':data};
+			       posts.push(post);
+			  	});
+				
+			  	return posts;
+			});
+	 
+	}
+
 	async search(keyword){
 		var posts =[];
 	   	var val = keyword.trim();                       
 	   	var key = encodeURIComponent(val);
-	   	var URL,html,$;
+	   	var url,html,$,image,title,image,time,post={},data;
 
 	   	if (key.length != 0) {
 	      URL = "https://english.jagran.com/search/" + key;
@@ -107,8 +139,9 @@ class EnglishJagran {
 	       image=elem.children[1].children[1].attribs['data-src'];
 	       title=elem.children[3].children[1].children[0].data;
 	       time=elem.children[3].children[5].children[2].children[0].data;
-	       
-	       post={'url':url,'title':title,'image':image,'date':time};
+	       data=elem.children[3].children[3].children[0].data;
+	       //console.log(data);
+	       post={'url':url,'title':title,'thumbnail':image,'date':time,'body':data};
 	       posts.push(post);
 	  	});
 		await this.driver.quit();

@@ -95,7 +95,7 @@ async function hindu(){
 }
 
 
-hindu();
+//hindu();
 
 
 async function bee(){
@@ -118,7 +118,22 @@ async function jagrant(){
 
 //directcall();
 
-module.exports ={ anni, hindu,bee,jagrant};
+//custom search on website
+
+async function search(website,keyword){
+  if(website=="jagran") var inst=await new jagranWeb();
+  else if(website=="thehindu") var inst=await new thehinduWeb();
+  else if(website=="ani") var inst=await new aniWEb();
+  await inst.search(keyword)
+            .then((posts)=>{
+              //console.log(posts);
+              return posts;
+            }); 
+
+}
+//search("jagran","corona");
+
+module.exports ={ anni, hindu,bee,jagrant,search};
 
 
 

@@ -28,7 +28,7 @@ class Ani {
 
 	//CATEGORIES=['national','politics','sports'];
 	constructor(){
-		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().windowSize(screen)).build();
+		this.driver = new webdriver.Builder().forBrowser('firefox').setFirefoxOptions(new firefox.Options().headless().windowSize(screen)).build();
 		this.pagetofetch={};
 		
 	}
@@ -188,7 +188,7 @@ class Ani {
 	async search(keyword){
 		var posts =[];
 		var html;
-		var $;
+		var $,image,url,title,time,data;
    		var val = keyword.trim();                       
     	var key = encodeURIComponent(val);
     	if (key.length != 0) {
@@ -196,7 +196,7 @@ class Ani {
       		}
   		await this.driver.get(URL);
 
-    	html = await driver.getPageSource();
+    	html = await this.driver.getPageSource();
         $ = cheerio.load(html);
         $(".extra-news-block .card").each((i,elem)=>{
  
@@ -205,8 +205,11 @@ class Ani {
 	       url=elem.children[1].children[3].children[1].attribs.href;
 	       title=elem.children[1].children[3].children[1].children[1].children[0].data;
 	       time=elem.children[1].children[3].children[3].children[1].children[0].children[0].data + elem.children[1].children[3].children[3].children[1].children[1].data;
-	       
-	       var post={'title':title,'image':image,'date':time};
+	       try{
+	       data=elem.children[1].children[3].children[5].children[0].data;
+	   		}catch(e){}
+	       //console.log(data);
+	       var post={'title':title,'thumbnail':image,'date':time,'body':data};
        	   posts.push(post);
         });
 		await this.driver.quit();

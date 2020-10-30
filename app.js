@@ -3,7 +3,8 @@ var app=express();
 var scraper=require("./main.js");
 var bodyParser=require("body-parser");
 const Article = require('./schema/article');
-
+const jagranWeb = require("./websites/EnglishJagran.js");
+const aniWeb = require("./websites/Ani.js");
 app.use(bodyParser.urlencoded({extended:true}));
 app.set("view engine","ejs")
 app.use(express.static(__dirname+'/public'));
@@ -31,16 +32,26 @@ app.get("/scraper/:website",(req,res)=>{
 	res.render("getlatest");
 });
 
-app.get("/search",(req,res)=>{
+app.get("/search",async (req,res)=>{
 	q=req.query.q;
 	console.log(q);
 	if(q==''||q==undefined)
 	res.render("search");
 	else{
+
+		var inst=await new jagranWeb();
+         await inst.search(q)
+            .then((posts)=>{
+            	console.log("mujhe milgya");
+              //console.log(posts);
+              res.json(posts);
+              
+            }); 
 		
-		Article.find({ body: { $regex: req.query.q, $options: "i" } } , function(err, articles) {
-			res.send(articles);
-		}).limit(10);
+		//await scraper.search("jagran",q).then((posts)=>{console.log("mujhe milgya data"); console.log(posts);});
+		//console.log(posts);
+		
+
 	}
 });
 
