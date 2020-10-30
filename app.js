@@ -7,7 +7,8 @@ var LocalStrategy=require("passport-local");
 var passportLocalMongoose=require("passport-local-mongoose");
 const Article = require("./schema/article");
 const httpMsgs = require('http-msgs');
-
+const request=require('request');
+var rp      = require('request-promise'); 
 
 app.use(require("express-session")({
 	secret:"india is the best country",
@@ -93,15 +94,22 @@ app.get('/home',isLoggedIn,function(req,res){
 });
 
 app.get('/searchresult',function(req,res){
-    Article.find({$text:{$search : req.query.keyword}},function(err,articles){
+    Article.find({$text:{$search : req.query.keyword}},async function(err,articles){
         if(err){
             console.log(req.query.keyword);
             console.log(err);
             res.redirect('/');
         }else{
-            res.render('searchresult',{keyword:req.query.keyword,articles:articles});
+           if(articles.length>0){console.log(articles); res.render('searchresult',{keyword:req.query.keyword,articles:articles}); }
+           else {
+               await rp('http://127.0.0.1:3000/search?q='+req.query.keyword)
+                    .then((data)=>{ //console.log(JSON.parse(data));
+                     res.render('searchresult',{keyword:req.query.keyword,articles:JSON.parse(data)}); });
+           }
         }
     });
+     
+
 });
 app.get('/articles/:id',function(req,res){
     Article.findById(req.params.id,function(err,foundArticle){
