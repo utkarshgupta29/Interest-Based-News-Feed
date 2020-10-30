@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="/assets/css/Footer-Dark.css">
     <link rel="stylesheet" href="/assets/css/Navigation-Clean.css">
     <link rel="stylesheet" href="/assets/css/Navigation-with-Button.css">
+    <link rel="stylesheet" href="assets/css/Profile-Edit-Form-1.css">
+    <link rel="stylesheet" href="assets/css/Profile-Edit-Form.css">
     <link rel="stylesheet" href="/assets/css/Registration-Form-with-Photo.css">
     <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
@@ -29,7 +31,7 @@
                 </ul>
                <span class="navbar-text actions"> <%if(!currentUser){ %> <a class="login" href="/login">Log In</a><a class="btn btn-light action-button" role="button" href="/signup">Sign Up</a>
                                 <%}else{ %> 
-                        <a class="login" href="/home"> <%=currentUser.username%></a>
+                        <a class="login" href="/profile"> <%=currentUser.username%></a>
                     <a class="btn btn-light action-button" role="button" href="/logout">Logout</a>
                     <%}%></span></div>
         </div>

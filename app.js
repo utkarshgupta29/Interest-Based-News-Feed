@@ -134,6 +134,10 @@ app.post('/category/:category',function(req,res){
     });
 });
 
+app.get('/profile',function(req,res){
+  res.render('profile');
+});
+
 app.get('/preferences',function(req,res){
     res.render('preferences');
 });
