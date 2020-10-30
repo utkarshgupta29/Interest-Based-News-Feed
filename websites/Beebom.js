@@ -142,6 +142,10 @@ class Beebom {
 		return fetched_articles;
 	}
 
+	quit(){
+		this.driver.quit();
+	}
+
 }
 
 module.exports= Beebom;

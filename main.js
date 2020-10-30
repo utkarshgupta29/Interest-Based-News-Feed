@@ -18,26 +18,37 @@ const thehinduWeb = require("./websites/TheHindu.js");
 
 //mongoose.connect("mongodb+srv://testUser:caJVL81AbLu7pe4D@cluster0.stbzy.mongodb.net/test?retryWrites=true&w=majority", {useNewUrlParser: true , useUnifiedTopology: true});
 
-
+//mongo "mongodb+srv://cluster0.stbzy.mongodb.net/" --username testUser
 
 
 
 // i will fetch latest artiles link every 3 minute
-var aajtak_getlatest = new CronJob('0 */3 * * * *',async ()=>{
-	console.log('fetching latest articles link from AajTak');
-	var latest=await new aajtakWeb().getLatest();
-	addtofetchqueue(latest);
+var bee_getlatest = new CronJob('0 */20 * * * *',async ()=>{
+	 bee();
 },null,false,'Asia/Kolkata');
 
 
 
-//aajtak_getlatest.start();
+//bee_getlatest.start();
 
-var beebom_getlatest =new CronJob('0 */10 * * * *',async()=>{
-  console.log('fetching latest links from beebom');
-  var latest=await new beebomWeb().getLatest();
-  addtofetchqueue(latest);
+var hindu_getlatest =new CronJob('0 */20 * * * *',async()=>{
+  console.log('fetching latest links from hindu new instance ');
+  hindu();
 },null,false,'Asia/Kolkata');
+
+//hindu_getlatest.start();
+
+var jagran_getlatest = new CronJob('0 */20 * * * *',async ()=>{
+   jagrant();
+},null,false,'Asia/Kolkata');
+
+//jagran_getlatest.start();
+
+var ani_getlatest = new CronJob('0 */20 * * * *',async ()=>{
+  anni();
+},null,false,'Asia/Kolkata');
+
+//ani_getlatest.start();
 
 
 function addtofetchqueue(data){
@@ -67,35 +78,41 @@ function addtofetchqueue(data){
 async function anni(){
   var inst=await new aniWEb();
   await inst.getLatest()
-       .then((links)=>{inst.fetchArticles(links)});
+       .then((links)=>{  inst.fetchArticles(links)
+            .then((articles)=>{console.log("anni done "); inst.quit();}) ;
+        }).catch((err)=>console.log(err));
 }
 
 //anni();
 
 
 async function hindu(){
-  var inst=await new thehinduWeb();
-  await inst.getLatest()
-       .then((links)=>{ inst.fetchArticles(links);  });
+  var inst2=await new thehinduWeb();
+  await inst2.getLatest()
+       .then((links)=>{  inst2.fetchArticles(links)
+            .then((articles)=>{console.log("hindu done "); inst2.quit();}) ;
+        }).catch((err)=>console.log(err));
 }
 
 
-
+hindu();
 
 
 async function bee(){
-  var inst=await new beebomWeb();
-  await inst.getLatest()
-       .then((links)=>{  inst.fetchArticles(links);  });
+  var inst3=await new beebomWeb();
+  await inst3.getLatest()
+       .then((links)=>{  inst3.fetchArticles(links)
+            .then((articles)=>{console.log("beeebom done "); inst3.quit();}) ;
+        }).catch((err)=>console.log(err));
 }
 
 //bee();
 async function jagrant(){
-  var inst=await new jagranWeb();
-  await inst.getLatest()
-       .then((links)=>{  inst.fetchArticles(links)
-            .then((articles)=>{console.log("jagran done "); inst.quit();}) ;
-        }).catch((err)=>console.err(err));
+  var inst4=await new jagranWeb();
+  await inst4.getLatest()
+       .then((links)=>{  inst4.fetchArticles(links)
+            .then((articles)=>{console.log("jagran done "); inst4.quit();}) ;
+        }).catch((err)=>console.log(err));
 }
 //jagrant();
 

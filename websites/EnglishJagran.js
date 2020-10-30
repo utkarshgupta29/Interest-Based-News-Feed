@@ -214,7 +214,9 @@ class EnglishJagran {
 
 	}
 
-
+	quit(){
+			this.driver.quit();
+		}
 
 
 }

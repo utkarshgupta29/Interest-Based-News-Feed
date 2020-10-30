@@ -153,6 +153,7 @@ class TheHindu{
 		var fetched_articles=[];
 		//console.log(links);
 		for(var i=0;i<links.length;i++){
+			//console.log(links[i].url);
 			await Article.findOne({url:links[i].url}).exec().then(async (article,err)=>{
 				if(article){
 					// article already exists in db
@@ -174,6 +175,10 @@ class TheHindu{
 			});	
 		}
 		return fetched_articles;
+	}
+
+	quit(){
+		this.driver.quit();
 	}
 
 
