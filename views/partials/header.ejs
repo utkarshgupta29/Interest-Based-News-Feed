@@ -38,7 +38,9 @@
     </nav>
     <nav class="navbar navbar-light navbar-expand-md bg-secondary navigation-clean" style="padding: 0px;">
         <div class="container"><button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <form class="form-inline" action="/searchresult" method="GET"><input class="form-control" name="keyword" type="text" style="width:18.2em"><button class="btn btn-primary" type="submit">Search</button></form>
+            <form class="form-inline" id="searchform" action="/searchresult" method="GET"><input class="form-control" id="searchbox" name="keyword" type="text" style="width:21.2em">
+<!--                <button class="btn btn-primary" type="submit">Search</button>-->
+            </form>
             <div class="collapse navbar-collapse" id="navcol-1" style="text-align: center;">
                 <ul class="nav navbar-nav mx-auto">
                     <li class="nav-item" role="presentation"><a class="nav-link" href="/home" style="color: rgb(255,255,255);">Home</a></li>
