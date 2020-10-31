@@ -17,7 +17,7 @@
                                     <% for(var j=0;j<Math.min(cat.length,8);j++){ %> 
                                         <div class="col-sm-6 col-lg-4 item">
                                             <h3 class="name"><strong><%=cat[j].title%>&nbsp;</strong></h3>
-                                            <p class="description"><%=cat[j].body.substring(150,Math.min(5,cat[j].body.length))%>.....</p>
+                                            <p class="description"><%=cat[j].body.substring(0,Math.min(150,cat[j].body.length))%>.....</p>
                                             <p><%=cat[j].date%></p>
                                             <p>Post by : <%=cat[j].websiteName%></p> 
                                             <a href="/articles/<%=cat[j]._id%>">Read More</a>

@@ -69,7 +69,7 @@ app.get('/home',isLoggedIn,function(req,res){
                             continue;
                         var arr = [];
                         for(var k=0;k<websites.length;k++){
-                            await Article.find({$and :[{$or : [{category : cats[i]},{subcategory : cats[i]}]},{websiteName : websites[k]}]}).exec().then(function(farticles){
+                            await Article.find({$and :[{$or : [{category : cats[i]},{subcategory : cats[i]}]},{websiteName : websites[k]}]}).sort({date: -1}).exec().then(function(farticles){
                                 for(var j=0;j<farticles.length;j++){
                                     arr.push(farticles[j]);
                                 }
@@ -94,7 +94,13 @@ app.get('/home',isLoggedIn,function(req,res){
 });
 
 app.get('/searchresult',function(req,res){
-    Article.find({$text:{$search : req.query.keyword}},async function(err,articles){
+    var arr = req.query.keyword.split(" ");
+    console.log(req.query.keyword +" "+ arr);
+    var keyS = req.query.keyword;
+    if(arr.length>1){
+       keyS = '\"'+keyS+'\"';
+    }
+    Article.find({$text:{$search : keyS}},async function(err,articles){
         if(err){
             console.log(req.query.keyword);
             console.log(err);
@@ -172,7 +178,6 @@ app.post('/preferences',function(req,res){
             console.log(err);
             res.redirect('/');
         }else{
-            
             // sports : [],
             // politics :[],
             // national : [],
@@ -181,7 +186,8 @@ app.post('/preferences',function(req,res){
             // business :[],
             // technology : [],
             // entertainment : []
-            currUser.preferences = user_new_preferences;
+            
+	    currUser.preferences = user_new_preferences;
             currUser.save();
             User.findById(currUser._id,function(err,user){
                 console.log(user);
@@ -246,6 +252,6 @@ function isLoggedIn(req,res,next){
 	//console.log("incorrect password");
 	res.redirect("/login");
 }
-app.listen(process.env.PORT||process.env.PORT,process.env.IP,function(){
+app.listen(5000||process.env.PORT,process.env.IP,function(){
 console.log("server started");
 });
