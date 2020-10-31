@@ -43,7 +43,7 @@ app.use(function(req,res,next){
 });
 
 app.get('/',function(req,res){
-    res.render("landingpage");
+    res.render("index");
 });
 app.get('/home',isLoggedIn,function(req,res){
     // sports
