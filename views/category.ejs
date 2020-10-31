@@ -4,11 +4,11 @@
         <div class="container">
             <h1 class="d-none" id="cat"><%= category %></h1>
             <form id="filterForm" enctype="application/x-www-form-urlencoded">
-                ANI : <input type="checkbox" name="websites" value="ani">
+                ANI : <input type="checkbox" name="websites" value="ani" checked>
                 THE HINDU : <input type="checkbox" name="websites" value="thehindu">
                 JAGRAN : <input type="checkbox" name="websites" value="jagran">
                 BEEBOM : <input type="checkbox" name="websites" value="beebom">
-                <input type="submit" value="Fetch News"> 
+                <input type="submit" id="filterbutton" value="Fetch News"> 
             </form>
             <div id="display">
             </div>

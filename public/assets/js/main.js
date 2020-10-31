@@ -2,6 +2,7 @@
 console.log("reached js ");
 $(document).ready(function(){
     $("#filterForm").submit(func);
+    $("#filterbutton").trigger("click")
 })
 function func(e){
     e.preventDefault();
