@@ -23,7 +23,7 @@ const thehinduWeb = require("./websites/TheHindu.js");
 
 
 // i will fetch latest artiles link every 3 minute
-var bee_getlatest = new CronJob('0 */20 * * * *',async ()=>{
+var bee_getlatest = new CronJob('0 */30 * * * *',async ()=>{
 	 bee();
 },null,false,'Asia/Kolkata');
 
@@ -31,20 +31,20 @@ var bee_getlatest = new CronJob('0 */20 * * * *',async ()=>{
 
 //bee_getlatest.start();
 
-var hindu_getlatest =new CronJob('0 */20 * * * *',async()=>{
+var hindu_getlatest =new CronJob('0 */30 * * * *',async()=>{
   console.log('fetching latest links from hindu new instance ');
   hindu();
 },null,false,'Asia/Kolkata');
 
 //hindu_getlatest.start();
 
-var jagran_getlatest = new CronJob('0 */20 * * * *',async ()=>{
+var jagran_getlatest = new CronJob('0 */30 * * * *',async ()=>{
    jagrant();
 },null,false,'Asia/Kolkata');
 
 //jagran_getlatest.start();
 
-var ani_getlatest = new CronJob('0 */20 * * * *',async ()=>{
+var ani_getlatest = new CronJob('0 */30 * * * *',async ()=>{
   anni();
 },null,false,'Asia/Kolkata');
 
@@ -83,7 +83,7 @@ async function anni(){
         }).catch((err)=>console.log(err));
 }
 
-//anni();
+anni();
 
 
 async function hindu(){
@@ -95,7 +95,7 @@ async function hindu(){
 }
 
 
-//hindu();
+hindu();
 
 
 async function bee(){
@@ -106,7 +106,7 @@ async function bee(){
         }).catch((err)=>console.log(err));
 }
 
-//bee();
+bee();
 async function jagrant(){
   var inst4=await new jagranWeb();
   await inst4.getLatest()
@@ -114,7 +114,7 @@ async function jagrant(){
             .then((articles)=>{console.log("jagran done "); inst4.quit();}) ;
         }).catch((err)=>console.log(err));
 }
-//jagrant();
+jagrant();
 
 //directcall();
 

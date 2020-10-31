@@ -157,7 +157,7 @@ class Ani {
 	}
 
 	async fetchArticles(links){
-		console.log("Fetching "+links.length+" articles.");
+		console.log("Fetching "+links.length+" articles from ani");
 		var fetched_articles=[];
 		//console.log(links);
 		for(var i=0;i<links.length;i++){
