@@ -83,7 +83,7 @@ async function anni(){
         }).catch((err)=>console.log(err));
 }
 
-anni();
+
 
 
 async function hindu(){
@@ -95,7 +95,7 @@ async function hindu(){
 }
 
 
-hindu();
+
 
 
 async function bee(){
@@ -106,7 +106,7 @@ async function bee(){
         }).catch((err)=>console.log(err));
 }
 
-bee();
+
 async function jagrant(){
   var inst4=await new jagranWeb();
   await inst4.getLatest()
@@ -114,9 +114,12 @@ async function jagrant(){
             .then((articles)=>{console.log("jagran done "); inst4.quit();}) ;
         }).catch((err)=>console.log(err));
 }
-jagrant();
 
-//directcall();
+// anni();
+// jagrant();
+// bee();
+// hindu();
+
 
 //custom search on website
 
