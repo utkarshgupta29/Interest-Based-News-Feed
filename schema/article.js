@@ -16,6 +16,7 @@ var articleSchema = new mongoose.Schema({
     title : String,
     thumbnail : String,
     body : String,
+    summary : String,
     date :  String, // {type : Date},     //TODO need to format datees of all websites befire nabling it
     websiteName : String,
     category : String,
