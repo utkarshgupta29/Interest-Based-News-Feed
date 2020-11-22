@@ -71,7 +71,8 @@ app.get('/home',isLoggedIn,function(req,res){
                         for(var k=0;k<websites.length;k++){
                             await Article.find({$and :[{$or : [{category : cats[i]},{subcategory : cats[i]}]},{websiteName : websites[k]}]}).sort({date: -1}).exec().then(function(farticles){
                                 for(var j=0;j<farticles.length;j++){
-                                    arr.push(farticles[j]);
+		                        console.log(farticles[j]);            
+					arr.push(farticles[j]);
                                 }
                             });
                         }
