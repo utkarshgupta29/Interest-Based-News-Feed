@@ -1,44 +1,31 @@
 <%- include('./partials/header.ejs') %>
-            
-            <% 
-                var cats = ['sports','politics','national','world','technology'];
-    
-                for (var i=0;i<cats.length;i++){ 
-                    var cat = articles[cats[i]];
-                    if( cat == null || cat.length ==0){
-                        continue;
-                    }else{ %> 
-                        <div class="features-clean">
-                            <div class="container">
-                                <div class="intro">
-                                    <h2 class="text-center"><%= cats[i].toUpperCase()%></h2>
+               
+<div class="features-clean">
+    <div class="container">
+        <div class="intro">
+            <h2 class="text-center">My Feed</h2>
+        </div>
+        <div class="row features">
+                <div class="card mb-3">
+                    <div class="row">
+                        <% for(var i=0;i<Math.min(articles.length,20);i++){ %>
+                            <div class="col-md-4"><img class="card-img-top" src="<%=articles[i].thumbnail%>" alt="Card image cap"></div>
+                            <div class="col-md-8 d-inline">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%=articles[i].title%></h5>
+                                    <p class="card-text"><%=articles[i].summary%></p>
+                                    <p class="card-text"><small class="text-muted">Last updated : <%=new Date(articles[i].date)%></small></p>
+                                    <p class="card-text d-inline"><small class="text-muted d-inline">News From : <%=articles[i].websiteName%></small></p>
+                                    &nbsp;&nbsp;
+                                    <a style="float:right"class="text-right card-text" href='/articles/<%=articles[i]._id%>'><small class="text-left text-muted">Read Full News</small></a>
                                 </div>
-                                <div class="row features">
-                                    <% for(var j=0;j<Math.min(cat.length,8);j++){ %> 
-                                        <div class="card mb-3">
-                                            <div class="row">
-                                                <div class="col-md-4"><img class="card-img-top" src="<%=cat[j].thumbnail%>" alt="Card image cap"></div>
-                                                <div class="col-md-8 d-inline">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title"><%=cat[j].title%></h5>
-                                                        <p class="card-text"><%=cat[j].summary%></p>
-                                                        <p class="card-text"><small class="text-muted">Last updated : <%=cat[j].date%></small></p>
-                                                        <p class="card-text d-inline"><small class="text-muted d-inline">News From : <%=cat[j].websiteName%></small></p>
-                                                        &nbsp;&nbsp;
-                                                        <a style="float:right"class="text-right card-text" href='/articles/<%=cat[j]._id%>'><small class="text-left text-muted">Read Full News</small></a>
-                                                    </div>
-                                                        
-                                                </div>
-                                            </div>
-                                          </div>
-                                        
-                                    <% } %> 
-                                </div>
+                                    
                             </div>
-                        </div>
-                        
-                    <% }
-                }
-            %>
+                        <% } %>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
 
 <%- include('./partials/footer.ejs') %>

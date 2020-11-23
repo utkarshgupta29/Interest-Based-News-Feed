@@ -61,7 +61,7 @@ app.get('/home',isLoggedIn,function(req,res){
             console.log("entered");
             async function p(){
                 return new Promise(async function(resolve,reject){
-                    var articles = {};
+                    var articles = [];
                     console.log("Inside promise");
                     for(var i=0;i<cats.length;i++){
                        var websites =  preferences[cats[i]];
@@ -71,17 +71,21 @@ app.get('/home',isLoggedIn,function(req,res){
                         for(var k=0;k<websites.length;k++){
                             await Article.find({$and :[{$or : [{category : cats[i]},{subcategory : cats[i]}]},{websiteName : websites[k]}]}).sort({date: -1}).exec().then(function(farticles){
                                 for(var j=0;j<farticles.length;j++){
-                                    arr.push(farticles[j]);
+                                    articles.push(farticles[j]);
                                 }
                             });
                         }
-
-                        articles[cats[i]] = arr;
-                        articles[cats[i]].sort(function(ob1,ob2){
-                            return ob2.date - ob1.date;
-                        });
+                        
                     }
-                    
+                    articles.sort(function(ob1,ob2){
+                        var diff = new Date(ob1.date) - new Date(ob2.date);
+                        if(diff<0)
+                            return 1;
+                        else if(diff==0)
+                            return 0;
+                        else
+                            return -1;
+                    });
                     resolve(articles);
 
                 });                
@@ -145,8 +149,11 @@ app.post('/category/:category',function(req,res){
             console.log(err);
             res.redirect('/');
         }else{
+            articles.sort(function(ob1,ob2){
+                return new Date(ob2.date) - new Date(ob1.date);
+            });
             httpMsgs.sendJSON(req,res,{
-                from : articles
+                from : {articles : articles,categoryName : req.params.category}
             });
         }
     });
