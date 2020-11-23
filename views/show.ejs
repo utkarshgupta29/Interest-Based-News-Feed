@@ -3,13 +3,17 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
-                    <div class="intro">
-                        <h1 class="text-center"><%=article.title%></h1>
-                        <p class="text-center"><span class="by">From</span> <a href="#"><%=article.websiteName%></a> <span class="date"><%=article.date%> </span></p><img class="img-fluid" src="assets/img/desk.jpg"></div>
-                    <div class="text">
-                        <%= article.body%>
-                        <p>This is updated </p>
+                    <div class="thumbnail">
+                        <h2 class="m-5 text-dark"><%=article.title%></h2>
+                        <img style="width:100%" class="img-responsive" src="<%=article.thumbnail%>">
+                        <div class="caption-full">
+                            <br>
+                            <p class='lead text-secondary text-small'><%=article.body%></p>
+                            <p class="text-info "><strong>Uploaded On :</strong> <%=article.date%></p>
+                            <p class="d-inline text-info pull-right"><strong>Article From : </strong><em ><%=article.websiteName%></em></p>
+                            
                         </div>
+                    </div>
                     
                 </div>
             </div>

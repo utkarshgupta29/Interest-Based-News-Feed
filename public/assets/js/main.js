@@ -24,7 +24,7 @@ function func(e){
             for(var i=0;i<res.from.length;i++){
                 var title = res.from[i].title;
                 var body = res.from[i].body;
-                var date = res.from[i].date;
+                var date = new Date(res.from[i].date);
                 var websiteName = res.from[i].websiteName;
                 str += "<div><h3>"+title+"</h3><p>"+body+"</p><p>Article From : <em>"+websiteName+"</em>  on "+date+".</p></div><br>";
             }

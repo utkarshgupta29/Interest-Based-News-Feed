@@ -75,8 +75,13 @@ app.get('/home',isLoggedIn,function(req,res){
                                 }
                             });
                         }
-                       articles[cats[i]] = arr;
+
+                        articles[cats[i]] = arr;
+                        articles[cats[i]].sort(function(ob1,ob2){
+                            return ob2.date - ob1.date;
+                        });
                     }
+                    
                     resolve(articles);
 
                 });                

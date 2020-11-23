@@ -11,19 +11,27 @@
                         <div class="features-clean">
                             <div class="container">
                                 <div class="intro">
-                                    <h2 class="text-center"><%= cats[i]%></h2>
+                                    <h2 class="text-center"><%= cats[i].toUpperCase()%></h2>
                                 </div>
                                 <div class="row features">
                                     <% for(var j=0;j<Math.min(cat.length,8);j++){ %> 
-                                        <div class="col-sm-6 col-lg-4 item">
-                                            <h3 class="name"><strong><%=cat[j].title%>&nbsp;</strong></h3>
-                                                <p class="description"><strong><em>Summary</em></strong> : <%= cat[j].summary %></p>
-                                             
-                                            <p><%=cat[j].date%></p>
-                                            <p>Post by : <%=cat[j].websiteName%></p> 
-                                            <a href="/articles/<%=cat[j]._id%>">Read Original Article.</a>
-                                            
-                                        </div>
+                                        <div class="card mb-3">
+                                            <div class="row">
+                                                <div class="col-md-4"><img class="card-img-top" src="<%=cat[j].thumbnail%>" alt="Card image cap"></div>
+                                                <div class="col-md-8 d-inline">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title"><%=cat[j].title%></h5>
+                                                        <p class="card-text"><%=cat[j].summary%></p>
+                                                        <p class="card-text"><small class="text-muted">Last updated : <%=cat[j].date%></small></p>
+                                                        <p class="card-text d-inline"><small class="text-muted d-inline">News From : <%=cat[j].websiteName%></small></p>
+                                                        &nbsp;&nbsp;
+                                                        <a style="float:right"class="text-right card-text" href='/articles/<%=cat[j]._id%>'><small class="text-left text-muted">Read Full News</small></a>
+                                                    </div>
+                                                        
+                                                </div>
+                                            </div>
+                                          </div>
+                                        
                                     <% } %> 
                                 </div>
                             </div>
