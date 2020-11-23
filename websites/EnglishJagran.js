@@ -104,7 +104,7 @@ class EnglishJagran {
 		console.log(dateParts);
 		console.log(last_modified);
 		var rawDate = {day : Number(dateParts[1]),month : mapMonth[dateParts[2].toLowerCase()],year : Number(dateParts[3]),hour: Number(dateParts[4]) ,minutes: Number(dateParts[5])};  
-		if(dateParts[6]==='pm' && rawDate<12){
+		if(dateParts[6]==='pm' && rawDate.hour<12){
 			rawDate.hour += 12;
 		}else if(dateParts[6]==='am'){
 			if(rawDate.hour==12)
@@ -307,15 +307,14 @@ class EnglishJagran {
 
 module.exports= EnglishJagran;
 
-/*
-	 For testing purpose :
 
-	async function main(){
-		const englishjagran = new EnglishJagran();
-		var fetched_articles = await englishjagran.getByCategory('sports');
-		console.log(fetched_articles);
-		// console.log(await ani.getLatest());
-	}
+	//  For testing purpose :
 
-	main();
-*/
+	// async function main(){
+	// 	const englishjagran = new EnglishJagran();
+	// 	var fetched_articles = await englishjagran.getByCategory('sports');
+	// 	console.log(fetched_articles);
+	// 	// console.log(await ani.getLatest());
+	// }
+
+	// main();

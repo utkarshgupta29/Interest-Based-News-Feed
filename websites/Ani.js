@@ -264,15 +264,13 @@ class Ani {
 
 module.exports= Ani;
 
-/*
-	For testing purpose :
+	// For testing purpose :
 
-	async function main(){
-		const ani = new Ani();
-		var fetched_articles = await ani.getByCategory('tech');
-		console.log(fetched_articles);
-		// console.log(await ani.getLatest());
-	}
+	// async function main(){
+	// 	const ani = new Ani();
+	// 	var fetched_articles = await ani.getByCategory('tech');
+	// 	console.log(fetched_articles);
+	// 	// console.log(await ani.getLatest());
+	// }
 
-	main();
-*/
+	// main();

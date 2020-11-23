@@ -225,15 +225,13 @@ class TheHindu{
 
 module.exports= TheHindu;
 
-/*
-	For testing purpose :
+	// For testing purpose :
 
-	async function main(){
-		const thehindu = new TheHindu();
-		var fetched_articles = await thehindu.getByCategory('sport');
-		console.log(fetched_articles);
-		// console.log(await ani.getLatest());
-	}
+	// async function main(){
+	// 	const thehindu = new TheHindu();
+	// 	var fetched_articles = await thehindu.getByCategory('sport');
+	// 	console.log(fetched_articles);
+	// 	// console.log(await ani.getLatest());
+	// }
 
-	main();
-*/
+	// main();

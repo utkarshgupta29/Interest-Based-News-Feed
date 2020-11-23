@@ -99,7 +99,7 @@ class Beebom {
 		
 			
 		var rawDate = {day : Number(dateParts[1]),month : mapMonth[dateParts[0].toLowerCase()],year : Number(dateParts[2]),hour: Number(dateParts[3]) ,minutes: Number(dateParts[4])};  
-		if(dateParts[5]==='pm' && rawDate<12){
+		if(dateParts[5]==='pm' && rawDate.hour<12){
 			rawDate.hour += 12;
 		}else if(dateParts[5]==='am'){
 			if(rawDate.hour==12)
@@ -199,14 +199,13 @@ class Beebom {
 
 module.exports= Beebom;
 
-/*
-async function main(){
-	const beebom = new Beebom();
-	var fetched_articles = await beebom.getLatestNews();
-	console.log(fetched_articles);
-	// console.log(await ani.getLatest());
-}
 
-main();
+// async function main(){
+// 	const beebom = new Beebom();
+// 	var fetched_articles = await beebom.getLatestNews();
+// 	console.log(fetched_articles);
+// 	// console.log(await ani.getLatest());
+// }
 
-*/
+// main();
+
