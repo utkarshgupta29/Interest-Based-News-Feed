@@ -3,6 +3,7 @@
 const cheerio = require('cheerio');
 const chalk = require('chalk');
 const Article = require('../schema/article');
+var newsSummarizer = require('../news-summarizer');
 // Selenium web driver configuration
 
 const firefox =require('selenium-webdriver/firefox');
@@ -62,28 +63,74 @@ class Beebom {
         html=await this.driver.getPageSource();
          $ = require('cheerio').load(html);
 	    var news_title = $('.entry-title').text();
-	    var last_modified = $('.the-modified-date > .updated').text();
+		var last_modified = $('.the-modified-date > .updated').text().toLowerCase();
+		var thumbnail = $('.news-featured-image').attr('src');
 	    var news_body =  "";
 	    $('.td-post-content > p').each(function(){
 	        news_body += $(this).text();
-	    });
+		});
+		var mapMonth = {
+			jan : 0,
+			feb : 1,
+			mar : 2,
+			apr : 3,
+			may : 4,
+			june : 5,
+			july : 6,
+			aug : 7,
+			sept : 8,
+			oct : 9,
+			nov : 10,
+			dec : 11,
+			january : 0,
+			february : 1,
+			march : 2,
+			april : 3,
+			may : 4,
+			june : 5,
+			july : 6,
+			august : 7,
+			september : 8,
+			october : 9,
+			november : 10,
+			december : 11  
+		};
+		var dateParts = last_modified.trim().split(/[\s,:]+/);
+		
+			
+		var rawDate = {day : Number(dateParts[1]),month : mapMonth[dateParts[0].toLowerCase()],year : Number(dateParts[2]),hour: Number(dateParts[3]) ,minutes: Number(dateParts[4])};  
+		if(dateParts[5]==='pm' && rawDate<12){
+			rawDate.hour += 12;
+		}else if(dateParts[5]==='am'){
+			if(rawDate.hour==12)
+				rawDate.hour = 0;
+		}
+		var date = new Date(rawDate.year,rawDate.month,rawDate.day,rawDate.hour,rawDate.minutes);
+		
+		
+		var news_summary = await newsSummarizer.getNewsSummary(news_body);
 	    var constructedArticle = {
 	        title : news_title,
 	        body : news_body,
-	        date : last_modified,
+	        date : date,
 	        url : link.url,
-	        //thumbnail :,
+	        thumbnail : thumbnail,
 	        websiteName : 'beebom',
-	        category : link.category,
-	        subcategory : link.subcategory,
-	    };
+	        category : 'technology',
+			subcategory : link.subcategory,
+			summary : news_summary
+		};
+		if(constructedArticle.body.length<20)
+			constructedArticle = null;
+		else
+			console.log(constructedArticle.summary.split(" ").length);
 	    return constructedArticle;
 
 	}
 
-	async getByCategory(category,subcategory){
+	async getLatestNews(){
 		var fetched_articles = [];
-    	await this.fetchCategoryLinks(category,subcategory).then(async(links)=>{
+    	await this.getLatest().then(async(links)=>{
 	        await this.fetchArticles(links).then((articles)=>{
 	            fetched_articles = articles;
 	        	});
@@ -126,15 +173,17 @@ class Beebom {
 				}else{
 					// article is not present in our db
 					var fa=await this.fetchArticle(links[i]);
-					fetched_articles.push(fa);
-					await Article.create(fa).then((s_article)=>{
-						if(s_article){
-							console.log("Article saved successfully : "+s_article._id);
-						}else{
-							console.log("article not saved"+s_article);
-						}
-					});
-
+					if(fa!=null){
+					
+						fetched_articles.push(fa);
+						await Article.create(fa).then((s_article)=>{
+							if(s_article){
+								console.log("Article saved successfully : "+s_article._id);
+							}else{
+								console.log("article not saved"+s_article);
+							}
+						});
+					}
 				}
 			});	
 		}
@@ -149,3 +198,15 @@ class Beebom {
 }
 
 module.exports= Beebom;
+
+/*
+async function main(){
+	const beebom = new Beebom();
+	var fetched_articles = await beebom.getLatestNews();
+	console.log(fetched_articles);
+	// console.log(await ani.getLatest());
+}
+
+main();
+
+*/

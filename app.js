@@ -10,9 +10,6 @@ app.set("view engine","ejs")
 app.use(express.static(__dirname+'/public'));
 
 
-
-
-
 app.get("/scraper",(req,res)=>{
 	
 	res.render("getlatest");

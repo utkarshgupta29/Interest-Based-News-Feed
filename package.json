@@ -11,6 +11,7 @@
     "express": "^4.17.1",
     "mongoose": "^5.10.9",
     "node-cron": "^2.0.3",
+    "node-summarizer": "^1.0.7",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "retext": "^7.0.1",
