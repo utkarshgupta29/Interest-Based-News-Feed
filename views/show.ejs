@@ -4,15 +4,19 @@
             <div class="row">
                 <div class="col-lg-10 col-xl-8 offset-lg-1 offset-xl-2">
                     <div class="thumbnail">
-                        <h2 class="m-5 text-dark"><%=article.title%></h2>
+                        <h4 class=" text-center m-5 text-dark"><%=article.title%></h4>
                         <img style="width:100%" class="img-responsive" src="<%=article.thumbnail%>">
                         <div class="caption-full">
                             <br>
-                            <p class='lead text-secondary text-small'><%=article.body%></p>
-                            <p class="text-info "><strong>Uploaded On :</strong> <%=article.date%></p>
-                            <p class="d-inline text-info pull-right"><strong>Article From : </strong><em ><%=article.websiteName%></em></p>
-                            
+                            <p class='lead text-secondary text-small'><%=article.summary%></p>
+                            <p class="text-info "><strong>Uploaded On :</strong> <%=new Date(article.date)%></p>
+                            <p class="text-info">Read <strong><a href="<%=article.url%>" target="_blank">Original Article </a></strong>from <em ><%=article.websiteName%></em></p>
                         </div>
+                        <a class="d-block d-md-none text-success" href= "whatsapp://send?text=<%=article.title%> | Read This Summarized News At http://ibnf.herokuapp.com/articles/<%=article._id%>"
+                                    data-action="share/whatsapp/share"
+                                    target="_blank">
+                        Share To Whatsapp <i class="fa fa-whatsapp" aria-hidden="true"></i> 
+                        </a>
                     </div>
                     
                 </div>
