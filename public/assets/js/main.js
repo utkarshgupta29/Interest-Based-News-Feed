@@ -78,6 +78,67 @@ function func(e){
     })
 }
 
+$(document).ready(function(){
+    $("#loadMoreForm").submit(loadMoreFunc);
+    $("#loadMorebutton").trigger("click")
+})
+function loadMoreFunc(e){
+    e.preventDefault();
+    var counter = Number($('#hiddenField').attr('value'));
+    $.ajax({
+        url : '/home',
+        data : {counter : counter},
+        method : "POST",
+        contentType : "application/x-www-form-urlencoded",
+        success : function(res){
+            console.log("ajax success");
+            console.log(res);
+            var str = "";
+            var articles = res.from.articles;
+            str = '<div class="row">';
+            for(var i=counter;i<Math.min(articles.length,counter+20);i++){
+                var title = articles[i].title;
+                var body = articles[i].body;
+                var date = new Date(articles[i].date);
+                var websiteName = articles[i].websiteName;
+                var thumbnail = articles[i].thumbnail;
+
+                str += '<div class="col-md-4"><img class="card-img-top" src="'+articles[i].thumbnail+'" alt="Card image cap"></div>'
+                            +
+                        '<div class="col-md-8 d-inline">'
+                            +
+                        '<div class="card-body">'
+                            +
+                        '<h5 class="card-title">'+articles[i].title+'</h5>'
+                            +
+                        '<p class="card-text">'+articles[i].summary+'</p>'
+                            +
+                        '<p class="card-text"><small class="text-muted">Last updated : '+new Date(articles[i].date)+'</small></p>'
+                            +
+                        '<p class="card-text d-inline"><small class="text-muted d-inline">News From : '+articles[i].websiteName+'</small></p>'
+                            +
+                        '&nbsp;&nbsp;'
+                            +
+                        '<a style="float:right"class="text-right card-text" href="/articles/'+articles[i]._id+'"><small class="text-left text-muted">Read Full News</small></a>'
+                            +
+                        '</div>'
+                            +
+                        '</div>'
+            }
+            str += '</div>'       
+
+            $('#display').html($('#display').html()+str);
+            if(counter+20>=articles.length)
+                $('#formSection').html("");
+            else
+                $('#hiddenField').attr('value',counter+20);
+        },
+        error : function(err){
+            console.log(err);
+        }
+        
+    })
+}
 
 
 

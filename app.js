@@ -86,6 +86,7 @@ app.get('/home',isLoggedIn,function(req,res){
                         else
                             return -1;
                     });
+                    req.session.savedArticles = articles;
                     resolve(articles);
 
                 });                
@@ -156,6 +157,14 @@ app.post('/category/:category',function(req,res){
                 from : {articles : articles,categoryName : req.params.category}
             });
         }
+    });
+});
+app.post('/home',isLoggedIn,function(req,res){
+    var counter = Number(req.body['counter']);
+    var savedArticles = req.session.savedArticles;
+    
+    httpMsgs.sendJSON(req,res,{
+                from : {articles : savedArticles}
     });
 });
 

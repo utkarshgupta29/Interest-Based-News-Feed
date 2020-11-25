@@ -22,10 +22,21 @@
                                     
                             </div>
                         <% } %>
+                           <div id="display"></div>
+
                     </div>
+
                 </div>
+
+        </div>
+        <div id="formSection">
+            <form id="loadMoreForm" enctype="application/x-www-form-urlencoded">
+                <input id="hiddenField" type="hidden" name="counter" value="20">
+                <input type="submit" id="loadMoreButton" value="Load More">
+            </form>
         </div>
     </div>
 </div>
-
+        <script src="/assets/js/jquery.min.js"></script>
+        <script src="/assets/js/main.js"></script>
 <%- include('./partials/footer.ejs') %>
