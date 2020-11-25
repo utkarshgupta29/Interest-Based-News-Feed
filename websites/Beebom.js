@@ -130,14 +130,16 @@ class Beebom {
 
 	async getLatestNews(){
 		var fetched_articles = [];
-    	await this.getLatest().then(async(links)=>{
+		console.log("Fetching From Beebom Started......");
+		await this.getLatest().then(async(links)=>{
 	        await this.fetchArticles(links).then((articles)=>{
 	            fetched_articles = articles;
-	        	});
-        });
-    	return fetched_articles;
+				console.log("Fetching From Beebom Completed.");
+			});
+		});
+		return fetched_articles;
 	}
-
+	
 	async search(keyword){  //TODO    no completed yet : server side issue taking too long to show results'
 		var posts ={};
 	    var val = keyword.trim();                       

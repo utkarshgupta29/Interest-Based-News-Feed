@@ -9,7 +9,7 @@ var toString = require('nlcst-to-string')
 
 const {ani,beebom,theHindu,jagran} =require('./schema/article.js');
 const tofetch =require('./schema/tofetch.js');
-const aajtak = require("./websites/AajTak.js");
+
 const aniWEb = require("./websites/Ani.js");
 const beebomWeb = require("./websites/Beebom.js");
 const jagranWeb = require("./websites/EnglishJagran.js");

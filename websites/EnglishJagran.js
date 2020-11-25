@@ -11,6 +11,7 @@ var rp      = require('request-promise');
 // Selenium web driver configuration
 
 const firefox =require('selenium-webdriver/firefox');
+const { getNewsSummary } = require('../news-summarizer');
 const webdriver = require('selenium-webdriver'),
     By = webdriver.By,
     until = webdriver.until,
@@ -297,7 +298,17 @@ class EnglishJagran {
 		  return links;
 
 	}
-
+	async getNews(){
+		console.log("Fetching News From Jagran Started.....")
+		var fetched_articles = [];
+		await this.getLatest().then(async(links)=>{
+		await this.fetchArticles(links).then((articles)=>{
+			fetched_articles = articles;
+			console.log("Fetching From Jagran Completed Succesfully.");
+			})
+		});
+		return fetched_articles;
+	}
 	quit(){
 			this.driver.quit();
 		}

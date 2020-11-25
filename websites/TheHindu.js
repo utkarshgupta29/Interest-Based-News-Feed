@@ -146,9 +146,6 @@ class TheHindu{
 	    return constructedArticle;
 	}
 
-	async getByCategory(category,subcategory){
-
-	}
 
 	async search(keyword){
 
@@ -185,6 +182,17 @@ class TheHindu{
         	})
     	});
     	return fetched_articles;
+	}
+	async getNews(){
+		var fetched_articles = [];
+		console.log("Fetching From TheHindu Started....")
+    	await this.getLatest().then(async(links)=>{
+        await this.fetchArticles(links).then((articles)=>{
+            fetched_articles = articles;
+			console.log("Fetching From TheHindu Completed.");
+		})
+		});
+		return fetched_articles;
 	}
 	async fetchArticles(links){
 		console.log("Fetching "+links.length+" articles from the TheHindu.");
@@ -229,7 +237,7 @@ module.exports= TheHindu;
 
 	// async function main(){
 	// 	const thehindu = new TheHindu();
-	// 	var fetched_articles = await thehindu.getByCategory('sport');
+	// 	var fetched_articles = await thehindu.getNews();
 	// 	console.log(fetched_articles);
 	// 	// console.log(await ani.getLatest());
 	// }

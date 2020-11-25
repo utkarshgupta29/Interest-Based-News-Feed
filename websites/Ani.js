@@ -46,8 +46,28 @@ class Ani {
 	    html = await this.driver.getPageSource();
 
 	    $ = cheerio.load(html);
+		
+		$('.content-block figcaption a').each((i,elem)=>{
+			url="https://aninews.in"+elem.attribs.href;
+			var temp = elem.attribs.href.split("/");
+			var category,subcategory;
+			
+			if(temp.length>=4){
+				category = temp[2];	//for getting category
 
-	    $('.top-news-block .avtaar-wrapper .avtaar-list a').each((i,elem)=>{
+				if(temp.length>=5)	//check if subcategory exists
+					subcategory = temp[3];	//get subcategory
+			}
+
+			var link = {
+	            url : url,
+	            category : category,
+	            subcategory : subcategory
+	        };
+	        links.push(link);
+		});
+		
+		$('.top-news-block .avtaar-wrapper .avtaar-list a').each((i,elem)=>{
 			url="https://aninews.in"+elem.attribs.href;
 			var temp = elem.attribs.href.split("/");
 			var category,subcategory;
@@ -140,11 +160,13 @@ class Ani {
 	    return constructedArticle;
 	}
 
-	async getByCategory(category,subcategory){
+	async getNews(category,subcategory){
+		console.log("Fetching News From ANI Started.....")
 		var fetched_articles = [];
-    	await this.fetchCategoryLinks(category,subcategory).then(async(links)=>{
+    	await this.getLatest().then(async(links)=>{
         await this.fetchArticles(links).then((articles)=>{
-            fetched_articles = articles;
+			fetched_articles = articles;
+			console.log("Fetching From ANI Completed Succesfully.");
         	})
     	});
     	return fetched_articles;
@@ -268,7 +290,7 @@ module.exports= Ani;
 
 	// async function main(){
 	// 	const ani = new Ani();
-	// 	var fetched_articles = await ani.getByCategory('tech');
+	// 	var fetched_articles = await ani.getNews();
 	// 	console.log(fetched_articles);
 	// 	// console.log(await ani.getLatest());
 	// }
