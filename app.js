@@ -24,9 +24,6 @@ app.use(express.static(__dirname+'/public'));
 
 //mongoose.connect("mongodb://localhost/insurance", {useNewUrlParser: true , useUnifiedTopology: true});
 
-
-
-
 var User =require("./schema/user.js");
 
 passport.use(new LocalStrategy(User.authenticate()));
