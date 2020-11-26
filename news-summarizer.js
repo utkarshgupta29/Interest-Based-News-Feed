@@ -20,12 +20,13 @@ function getNewsSummary(text_to_summarize){
         // Summary By Frequency
 
         function getPerfectSummary(){
-            return new Promise((resolve,reject)=>{
+            return new Promise(async (resolve,reject)=>{
                 var si = 1;
                 var ei = 10;
                 
                 var Summarizer = new SummarizerManager(text_to_summarize,1); 
-                var summary = Summarizer.getSummaryByFrequency().summary;
+                var summary_object = await Summarizer.getSummaryByRank();
+                var summary = summary_object.summary;
                 
                 
                 var lastAns = summary;
@@ -34,7 +35,8 @@ function getNewsSummary(text_to_summarize){
                     var mi = si + (ei-si)/2;
                     console.log("inside loop"+mi);
                     Summarizer = new SummarizerManager(text_to_summarize,mi); 
-                    summary = Summarizer.getSummaryByFrequency().summary;
+                    summary_object = await Summarizer.getSummaryByRank();
+                    summary = summary_object.summary;
                     var wordsCount = summary.split(" ").length;
                     if(wordsCount<=70){
                         lastAns = summary;
