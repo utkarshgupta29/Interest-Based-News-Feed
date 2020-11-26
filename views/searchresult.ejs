@@ -8,18 +8,21 @@
                     <h2 class="text-center">No articles found.</h2>
                 <% } %>    
             </div>
-            <div class="row articles">
+            <div class="row features">
+                <div class="card mb-3">
+                    <div class="row">
                 <% for(var i = 0;i<articles.length;i++){ %>
-                    <div class="col-sm-6 col-md-4 item">
-                        <a href="#">
-                            <!-- <img class="img-fluid" src="assets/img/desk.jpg"> -->
-                        </a>
-                        <h3 class="name"><%= articles[i].title %></h3>
-                        <p class="description"><%=articles[i].body.substring(0,Math.min(articles[i].body.length,200)) %>........</p>
-                        <br>
-                        <p class="lead"> <%=articles[i].date %></p>
-                        <p class="d-inline"><%=articles[i].websiteName %></p>
-                        <a href="/articles/<%=articles[i]._id%>">Read More</a>
+                    <div class="col-md-4"><img class="card-img-top" src="<%=articles[i].thumbnail%>" alt="Card image cap"></div>
+                    <div class="col-md-8 d-inline">
+                        <div class="card-body">
+                            <h5 class="card-title"><%=articles[i].title%></h5>
+                            <p class="card-text"><%=articles[i].summary%></p>
+                            <p class="card-text"><small class="text-muted">Last updated : <%=new Date(articles[i].date)%></small></p>
+                            <p class="card-text d-inline"><small class="text-muted d-inline">News From : <%=articles[i].websiteName%></small></p>
+                            &nbsp;&nbsp;
+                            <a style="float:right"class="text-right card-text" href='/articles/<%=articles[i]._id%>'><small class="text-left text-muted">View Article</small></a>
+                        </div>
+                            
                     </div>
                 <% } %>
                 <!-- <div class="col-sm-6 col-md-4 item"><a href="#"><img class="img-fluid" src="assets/img/building.jpg"></a>
@@ -28,7 +31,11 @@
                 <div class="col-sm-6 col-md-4 item"><a href="#"><img class="img-fluid" src="assets/img/loft.jpg"></a>
                     <h3 class="name">Article Title</h3>
                     <p class="description">Aenean tortor est, vulputate quis leo in, vehicula rhoncus lacus. Praesent aliquam in tellus eu gravida. Aliquam varius finibus est, interdum justo suscipit id.</p><a class="action" href="#"></a></div> -->
+            
+                </div>
+        
             </div>
         </div>
     </div>
+</div>
 <%- include('./partials/footer.ejs') %>

@@ -17,7 +17,7 @@
                                     <p class="card-text"><small class="text-muted">Last updated : <%=new Date(articles[i].date)%></small></p>
                                     <p class="card-text d-inline"><small class="text-muted d-inline">News From : <%=articles[i].websiteName%></small></p>
                                     &nbsp;&nbsp;
-                                    <a style="float:right"class="text-right card-text" href='/articles/<%=articles[i]._id%>'><small class="text-left text-muted">Read Full News</small></a>
+                                    <a style="float:right"class="text-right card-text" href='/articles/<%=articles[i]._id%>'><small class="text-left text-muted">View Article</small></a>
                                 </div>
                                     
                             </div>
@@ -30,10 +30,12 @@
 
         </div>
         <div id="formSection">
+            <% if(articles.length>20){ %>
             <form id="loadMoreForm" enctype="application/x-www-form-urlencoded">
                 <input id="hiddenField" type="hidden" name="counter" value="20">
                 <input type="submit" id="loadMoreButton" value="Load More">
             </form>
+            <% } %> 
         </div>
     </div>
 </div>
