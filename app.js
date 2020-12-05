@@ -21,7 +21,7 @@ app.set("view engine","ejs");
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(__dirname+'/public'));
-
+app.use(require('express-status-monitor')());
 //mongoose.connect("mongodb://localhost/insurance", {useNewUrlParser: true , useUnifiedTopology: true});
 
 var User =require("./schema/user.js");

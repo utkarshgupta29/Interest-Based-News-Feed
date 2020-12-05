@@ -12,12 +12,13 @@
                             <div class="col-md-4"><img class="card-img-top" src="<%=articles[i].thumbnail%>" alt="Card image cap"></div>
                             <div class="col-md-8 d-inline">
                                 <div class="card-body">
-                                    <h5 class="card-title"><%=articles[i].title%></h5>
+                                    <h5 class="card-title"><a style="color:black; text-decoration: none;" class="text-right card-text" href='/articles/<%=articles[i]._id%>'></a><%=articles[i].title%></a></h5>
                                     <p class="card-text"><%=articles[i].summary%></p>
                                     <p class="card-text"><small class="text-muted">Last updated : <%=new Date(articles[i].date)%></small></p>
-                                    <p class="card-text d-inline"><small class="text-muted d-inline">News From : <%=articles[i].websiteName%></small></p>
+                                    <p class="card-text d-inline"><small class="text-muted d-inline">News From : <%=articles[i].websiteName.toUpperCase()%></small></p>
                                     &nbsp;&nbsp;
-                                    <a style="float:right"class="text-right card-text" href='/articles/<%=articles[i]._id%>'><small class="text-left text-muted">View Article</small></a>
+                                    <p style="float:right; text-transform: capitalize;"class="text-right card-text"><small class="text-left text-muted">Category : <%=articles[i].category%></small></a>
+                                    
                                 </div>
                                     
                             </div>
