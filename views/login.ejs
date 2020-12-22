@@ -7,6 +7,9 @@
                 <h2 class="text-center">LOGIN</h2>
                 <div class="form-group"><input class="form-control" type="email" name="email" placeholder="Email"></div>
                 <div class="form-group"><input class="form-control" type="password" name="password" placeholder="Password"></div>
+                <%if(retry){%>
+                    <div style="color: red;text-align: center;">Incorrect password</div>
+                <%}%>
                 <div class="form-group"><button class="btn btn-primary btn-block" type="submit">Sign In</button></div><a class="already" href="#">Forgot password ?&nbsp;</a></form>
         </div>
     </div>
