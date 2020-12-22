@@ -39,9 +39,9 @@ function func(e){
                 var websiteName = articles[i].websiteName;
                 var thumbnail = articles[i].thumbnail;
 
-                str += '<div class="col-md-4"><img class="card-img-top" src="'+articles[i].thumbnail+'" alt="Card image cap"></div>'
+                str += '<div class="col-md-4" style="cursor:pointer" onclick="javascript:location.href=\'/articles/'+articles[i]._id+'\'"><img class="card-img-top" src="'+articles[i].thumbnail+'" alt="Card image cap"></div>'
                             +
-                        '<div class="col-md-8 d-inline">'
+                        '<div class="col-md-8 d-inline" style="cursor:pointer" onclick="javascript:location.href=\'/articles/'+articles[i]._id+'\'"> '
                             +
                         '<div class="card-body">'
                             +
